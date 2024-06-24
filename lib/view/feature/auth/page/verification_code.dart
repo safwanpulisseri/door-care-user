@@ -1,3 +1,4 @@
+import 'package:door_care/view/feature/home/page/home.dart';
 import 'package:door_care/view/theme/color/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
@@ -35,13 +36,12 @@ class OtpVerificationPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColor.background,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -87,7 +87,10 @@ class OtpVerificationPage extends StatelessWidget {
             ),
             const SizedBox(height: 32),
             CustomElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (ctx) => HomePage()));
+              },
               text: 'Continue',
               fontSize: 18,
               width: double.infinity,

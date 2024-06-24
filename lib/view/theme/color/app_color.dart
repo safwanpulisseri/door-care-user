@@ -8,4 +8,8 @@ final class AppColor {
   static const Color secondary = Colors.black;
   static const Color toneTwo = Color(0xFFFFCACA);
   static const Color textfield = Color(0xFFF5F5F5);
+  static const Color toneThree = Colors.grey;
+  static const Color starColour = Color(0xFFFFC554);
+  static const Color toneFour = Color(0xFFECEAF6);
+  static const Color toneFive = Color(0xFFA492EB);
 }
