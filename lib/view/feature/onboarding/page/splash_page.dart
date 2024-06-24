@@ -9,25 +9,25 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 2)).whenComplete(() {
+    Future.delayed(const Duration(seconds: 2)).whenComplete(() {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => OnboardingPage(),
+            builder: (context) => const OnboardingPage(),
           ),
           (route) => false);
     });
     return Scaffold(
-      backgroundColor: AppColor.splash,
+      backgroundColor: AppColor.primary,
       body: SafeArea(
           child: SizedBox(
               width: double.infinity,
               height: double.infinity,
               child: Column(
                 children: [
-                  Spacer(flex: 4),
+                  const Spacer(flex: 4),
                   SvgPicture.asset(AppSvgPath.splashLogo),
-                  Spacer(
+                  const Spacer(
                     flex: 1,
                   )
                 ],
