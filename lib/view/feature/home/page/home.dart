@@ -1,8 +1,6 @@
-import 'package:door_care/view/feature/auth/widget/customTextFormField.dart';
 import 'package:door_care/view/feature/drawer/home_drawer.dart';
-import 'package:door_care/view/feature/onboarding/widget/cutom_elevated_button.dart';
+import 'package:door_care/view/feature/home/widget/search_widget.dart';
 import 'package:door_care/view/theme/color/app_color.dart';
-import 'package:door_care/view/util/app_padding.dart';
 import 'package:door_care/view/widget/padding_widget.dart';
 import 'package:flutter/material.dart';
 import '../../../widget/opacity_container.dart';
@@ -50,7 +48,7 @@ class HomePage extends StatelessWidget {
                   textAlign: TextAlign.start,
                 ),
                 const SizedBox(height: 16),
-                const SearchBar(),
+                const SearchWidget(),
                 const SizedBox(height: 24),
                 Row(
                   children: [
@@ -126,55 +124,6 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class SearchBar extends StatelessWidget {
-  const SearchBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColor.toneThree.withOpacity(0.3)),
-        color: AppColor.textfield,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: AppColor.toneThree.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          const Expanded(
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search what you need...',
-                border: InputBorder.none,
-              ),
-            ),
-          ),
-          Container(
-            height: 40,
-            width: 40,
-            decoration: BoxDecoration(
-              color: AppColor.primary,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: IconButton(
-              icon: const Icon(Icons.search, color: AppColor.background),
-              onPressed: () {},
-            ),
-          ),
-        ],
       ),
     );
   }

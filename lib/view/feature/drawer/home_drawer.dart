@@ -1,3 +1,4 @@
+import 'package:door_care/view/feature/drawer/page/user_details.dart';
 import 'package:door_care/view/theme/color/app_color.dart';
 import 'package:door_care/view/util/png_asset.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +12,46 @@ class CustomDrawer extends StatelessWidget {
       backgroundColor: AppColor.primary,
       child: Column(
         children: [
-          const UserAccountsDrawerHeader(
-            accountName: Text('Safwan Pulisseri'),
-            accountEmail: Text('safwanpulisseri123@gmail.com'),
-            currentAccountPicture: CircleAvatar(
-              backgroundImage: AssetImage(AppPngPath.onboardOne),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (ctx) => UserDetailsPage()));
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 70, left: 10),
+              child: Row(
+                children: [
+                  const CircleAvatar(
+                    radius: 30,
+                    backgroundImage: AssetImage(AppPngPath.homeCleanOne),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Safwan Pulisseri',
+                        style:
+                            Theme.of(context).textTheme.headlineLarge?.copyWith(
+                                  color: AppColor.background,
+                                  fontSize: 17,
+                                ),
+                      ),
+                      Text(
+                        'safwanpulisseri123@gmail.com',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColor.background,
+                              fontWeight: FontWeight.w300,
+                              fontSize: 13,
+                            ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            decoration: BoxDecoration(color: AppColor.primary),
           ),
           Expanded(
             child: ListView(
@@ -34,18 +68,36 @@ class CustomDrawer extends StatelessWidget {
               ],
             ),
           ),
-          ListTile(
-            leading: const Icon(Icons.info_outline, color: Colors.white),
-            title: const Text('Pulisseri Production',
-                style: TextStyle(color: Colors.white)),
-            tileColor: Colors.blue,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+          Container(
+            decoration: BoxDecoration(
+                color: AppColor.toneThree.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(20)),
+            height: 40,
+            width: 250,
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.info_outline, color: AppColor.background),
+                SizedBox(
+                  width: 10,
+                ),
+                Text('Pulisseri Production',
+                    style: TextStyle(color: AppColor.background)),
+              ],
             ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Divider(
+            thickness: 0.5,
+            indent: 30,
+            endIndent: 30,
           ),
           const Padding(
             padding: EdgeInsets.all(8.0),
-            child: Text('version number', style: TextStyle(color: Colors.grey)),
+            child: Text('version number',
+                style: TextStyle(color: AppColor.toneThree)),
           ),
         ],
       ),
