@@ -8,18 +8,20 @@ class JoinOurTeamCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 250,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColor.toneFour,
-        borderRadius: BorderRadius.circular(8),
-        image: const DecorationImage(
-          image: AssetImage(
-            AppPngPath.joinOurTeam,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Container(
+        width: double.infinity,
+        height: 250,
+        decoration: BoxDecoration(
+          color: AppColor.toneFour,
+          borderRadius: BorderRadius.circular(8),
+          image: const DecorationImage(
+            image: AssetImage(
+              AppPngPath.joinOurTeam,
+            ),
+            fit: BoxFit.cover,
           ),
-          fit: BoxFit.cover,
         ),
       ),
     );
