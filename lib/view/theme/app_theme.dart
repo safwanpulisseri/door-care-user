@@ -88,5 +88,14 @@ class AppTheme {
         backgroundColor: AppColor.background,
       ),
       tabBarTheme: const TabBarTheme(dividerColor: Colors.transparent),
-      appBarTheme: AppBarTheme(backgroundColor: AppColor.background));
+      appBarTheme: const AppBarTheme(backgroundColor: AppColor.background),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColor.primary,
+          foregroundColor: AppColor.background,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ));
 }

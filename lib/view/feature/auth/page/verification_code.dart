@@ -3,7 +3,7 @@ import 'package:door_care/view/theme/color/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
-import '../../onboarding/widget/cutom_elevated_button.dart';
+import '../../onboarding/widget/custom_elevated_button.dart';
 
 class OtpVerificationPage extends StatelessWidget {
   const OtpVerificationPage({super.key});
@@ -89,7 +89,7 @@ class OtpVerificationPage extends StatelessWidget {
             CustomElevatedButton(
               onPressed: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (ctx) => HomePage()));
+                    context, MaterialPageRoute(builder: (ctx) => const HomePage()));
               },
               text: 'Continue',
               fontSize: 18,

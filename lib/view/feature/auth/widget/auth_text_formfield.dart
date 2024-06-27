@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../theme/color/app_color.dart';
-import '../../../util/svg_asset.dart';
 
-class CustomTextFormField extends StatefulWidget {
+class AuthTextFormField extends StatefulWidget {
   final TextEditingController controller;
   final String labelText;
   final String hintText;
@@ -12,23 +11,25 @@ class CustomTextFormField extends StatefulWidget {
   final bool obscureText;
   final String? prefixIcon;
   final bool showPasswordToggle;
+  final TextInputType textInputType;
 
-  const CustomTextFormField({
-    Key? key,
+  const AuthTextFormField({
+    super.key,
     required this.controller,
     required this.labelText,
     required this.hintText,
+    this.textInputType = TextInputType.text,
     this.validator,
     this.obscureText = false,
     this.prefixIcon,
     this.showPasswordToggle = false,
-  }) : super(key: key);
+  });
 
   @override
-  _CustomTextFormFieldState createState() => _CustomTextFormFieldState();
+  createState() => _AuthTextFormFieldState();
 }
 
-class _CustomTextFormFieldState extends State<CustomTextFormField> {
+class _AuthTextFormFieldState extends State<AuthTextFormField> {
   bool _obscureText = true;
 
   @override
@@ -47,6 +48,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         const SizedBox(height: 8.0),
         TextFormField(
           controller: widget.controller,
+          keyboardType: widget.textInputType,
           validator: widget.validator,
           obscureText: widget.obscureText && _obscureText,
           decoration: InputDecoration(
@@ -63,7 +65,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                   )
                 : null, // Use prefixIcon if provided
             hintText: widget.hintText,
-            hintStyle: TextStyle(
+            hintStyle: const TextStyle(
               color: Colors.grey,
               fontSize: 16.0,
             ),
@@ -73,7 +75,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.0),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: AppColor.primary,
                 width: 1.0,
               ),
@@ -92,11 +94,12 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                   )
                 : null,
           ),
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16.0,
             color: Colors.black,
           ),
         ),
+        const SizedBox(height: 7)
       ],
     );
   }
