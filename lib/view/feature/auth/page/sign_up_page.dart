@@ -1,25 +1,27 @@
 import 'package:door_care/view/feature/auth/page/verification_code.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import '../../../theme/color/app_color.dart';
-import '../../../util/svg_asset.dart';
-import '../../onboarding/widget/cutom_elevated_button.dart';
-import '../widget/customTextFormField.dart';
+import '../../onboarding/widget/custom_elevated_button.dart';
+import '../widget/auth_text_formfield.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final TextEditingController firstNameController = TextEditingController();
-    final TextEditingController secondNameController = TextEditingController();
-    final TextEditingController mobileController = TextEditingController();
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
-    final TextEditingController confirmPasswordController =
-        TextEditingController();
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  State<SignUpPage> createState() => _SignUpPageState();
+}
 
+class _SignUpPageState extends State<SignUpPage> {
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController secondNameController = TextEditingController();
+  final TextEditingController mobileController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -48,7 +50,7 @@ class SignUpPage extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
-                child: CustomTextFormField(
+                child: AuthTextFormField(
                   controller: firstNameController,
                   labelText: 'First Name',
                   hintText: 'Enter your first name',
@@ -63,7 +65,7 @@ class SignUpPage extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
-                child: CustomTextFormField(
+                child: AuthTextFormField(
                   controller: secondNameController,
                   labelText: 'Last Name',
                   hintText: 'Enter your last name',
@@ -78,8 +80,9 @@ class SignUpPage extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
-                child: CustomTextFormField(
+                child: AuthTextFormField(
                   controller: mobileController,
+                  textInputType: TextInputType.number,
                   labelText: 'Mobile Number',
                   hintText: 'Enter your mobile number',
                   validator: (value) {
@@ -95,10 +98,11 @@ class SignUpPage extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
-                child: CustomTextFormField(
+                child: AuthTextFormField(
                   controller: emailController,
                   labelText: 'E-mail',
                   hintText: 'Enter your email',
+                  textInputType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
@@ -113,11 +117,11 @@ class SignUpPage extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
-                child: CustomTextFormField(
+                child: AuthTextFormField(
                   controller: passwordController,
                   labelText: 'Password',
                   hintText: 'Enter your password',
-                  obscureText: true, // Hide the password with ****
+                  obscureText: true, // Hide the password
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password';
@@ -132,7 +136,7 @@ class SignUpPage extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
-                child: CustomTextFormField(
+                child: AuthTextFormField(
                   controller: confirmPasswordController,
                   labelText: 'Confirm Password',
                   hintText: 'Re-Enter your password',

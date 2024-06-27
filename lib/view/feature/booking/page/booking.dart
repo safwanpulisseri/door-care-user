@@ -2,7 +2,6 @@ import 'package:door_care/view/feature/booking/tabs/committed_tab.dart';
 import 'package:door_care/view/feature/booking/tabs/completed_tab.dart';
 import 'package:door_care/view/feature/booking/tabs/pending_tab.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../../theme/color/app_color.dart';
 import '../../../widget/opacity_container.dart';
 

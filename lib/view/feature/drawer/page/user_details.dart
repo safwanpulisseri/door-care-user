@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../theme/color/app_color.dart';
 import '../../../util/png_asset.dart';
 import '../../../widget/opacity_container.dart';
-import '../../auth/widget/customTextFormField.dart';
+import '../../auth/widget/auth_text_formfield.dart';
 import '../widget/appbar_widget.dart';
 
 class UserDetailsPage extends StatelessWidget {
@@ -52,15 +52,16 @@ class UserDetailsPage extends StatelessWidget {
               radius: 50,
               backgroundImage: AssetImage(AppPngPath.homeCleanOne),
             ),
-            CustomTextFormField(
+            AuthTextFormField(
               controller: _nameController,
               labelText: 'Name',
               hintText: 'Update your name',
+              
             ),
             const SizedBox(
               height: 10,
             ),
-            CustomTextFormField(
+            AuthTextFormField(
               controller: _mobileNumberController,
               labelText: 'Mobile Number',
               hintText: 'Update your number',

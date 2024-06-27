@@ -1,130 +1,119 @@
-import 'package:door_care/view/feature/auth/page/sign_up_page.dart';
-import 'package:door_care/view/feature/auth/page/verification_code.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
-import '../../../theme/color/app_color.dart';
-import '../../../util/svg_asset.dart';
-import '../../onboarding/widget/cutom_elevated_button.dart';
-import '../widget/customTextFormField.dart';
+import 'dart:developer';
 
-class SignInPage extends StatelessWidget {
+import 'package:door_care/view/feature/auth/page/sign_up_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../bloc/auth_bloc/auth_bloc.dart';
+import '../../../util/svg_asset.dart';
+import '../../../widget/app_logo_widget.dart';
+import '../widget/auth_button.dart';
+import '../widget/auth_title_widget.dart';
+import '../widget/auth_text_formfield.dart';
+
+class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  State<SignInPage> createState() => _SignInPageState();
+}
 
-    return Scaffold(
-      body: SafeArea(
-        child: Form(
-          key: formKey,
-          child: Column(
-            children: [
-              Spacer(flex: 5),
-              Center(child: SvgPicture.asset(AppSvgPath.mainLogo)),
-              Spacer(flex: 1),
-              Text(
-                'Sign in',
-                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 35,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-              Spacer(flex: 2),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: CustomTextFormField(
-                  controller: emailController,
-                  labelText: 'E-mail',
-                  hintText: 'Enter your email',
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
-                    } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                        .hasMatch(value)) {
-                      return 'Please enter a valid email address';
-                    }
-                    return null;
-                  },
-                  prefixIcon: AppSvgPath.mailLogo,
-                ),
-              ),
-              Spacer(flex: 1),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: CustomTextFormField(
-                  controller: passwordController,
-                  labelText: 'Password',
-                  hintText: 'Enter your password',
-                  obscureText: true, // Hide the password with ****
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
-                    } else if (value.length < 6) {
-                      return 'Password must be at least 6 characters long';
-                    }
-                    return null;
-                  },
-                  prefixIcon: AppSvgPath.passwordLogo,
-                  showPasswordToggle: true,
-                ),
-              ),
-              const Spacer(flex: 5),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: CustomElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
+class _SignInPageState extends State<SignInPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final AuthBloc _authBloc = AuthBloc();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _authBloc.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AuthBloc, AuthState>(
+      bloc: _authBloc,
+      listener: (context, state) {
+        if (state is AuthLoading) {
+          log("loading...");
+          // LoadingDialog.show(context);
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  const Spacer(flex: 2),
+                  const AppLogoWidget(),
+                  const SizedBox(height: 10),
+                  const AuthTitleWidget(
+                    title: 'Sign in',
+                  ),
+                  const Spacer(flex: 1),
+                  AuthTextFormField(
+                    controller: _emailController,
+                    labelText: 'E-mail',
+                    hintText: 'Enter your email',
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                          .hasMatch(value)) {
+                        return 'Please enter a valid email address';
+                      }
+                      return null;
+                    },
+                    prefixIcon: AppSvgPath.mailLogo,
+                  ),
+                  const Spacer(flex: 1),
+                  AuthTextFormField(
+                    controller: _passwordController,
+                    labelText: 'Password',
+                    hintText: 'Enter your password',
+                    obscureText: true, // Hide the password
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      } else if (value.length < 6) {
+                        return 'Password must be at least 6 characters long';
+                      }
+                      return null;
+                    },
+                    prefixIcon: AppSvgPath.passwordLogo,
+                    showPasswordToggle: true,
+                  ),
+                  const Spacer(flex: 2),
+                  AuthButton(
+                    buttonText: "Sign In",
+                    navigationTitle: 'Create a New Account? ',
+                    navigationSubtitle: 'Sign up',
+                    buttonCallback: () {
+                      _authBloc.add(
+                        EmailSignInAuthEvent(
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                        ),
+                      );
+                    },
+                    textCallback: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (ctx) => const OtpVerificationPage(),
+                          builder: (_) => const SignUpPage(),
                         ),
                       );
-                    }
-                  },
-                  text: 'Sign In',
-                  backgroundColor: AppColor.primary,
-                  textColor: AppColor.background,
-                  fontSize: 18,
-                  width: double.infinity,
-                  height: 50,
-                ),
+                    },
+                  ),
+                  const Spacer(flex: 7),
+                ],
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (ctx) => SignUpPage()));
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Create a New Account? ',
-                      style:
-                          Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                color: AppColor.secondary,
-                                fontSize: 18,
-                              ),
-                    ),
-                    Text(
-                      'Sign up',
-                      style:
-                          Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                color: AppColor.primary,
-                                fontSize: 18,
-                              ),
-                    ),
-                  ],
-                ),
-              ),
-              const Spacer(flex: 20),
-            ],
+            ),
           ),
         ),
       ),

@@ -4,7 +4,7 @@ import 'package:door_care/view/feature/auth/page/sign_in_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../bloc/bloc/onboarding_bloc.dart';
+import '../../../../bloc/onboarding_bloc/onboarding_bloc.dart';
 import '../../../theme/color/app_color.dart';
 
 class OnboardingSkipWidget extends StatelessWidget {
