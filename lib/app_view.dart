@@ -1,3 +1,4 @@
+import 'package:door_care/view/feature/auth/page/sign_up_page.dart';
 import 'package:door_care/view/feature/onboarding/page/splash_page.dart';
 import 'package:door_care/view/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class MyAppView extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.theme,
-      home: const SplashPage(),
+      home: const SignUpPage(),
     );
   }
 }

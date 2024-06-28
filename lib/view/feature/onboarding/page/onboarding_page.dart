@@ -1,4 +1,3 @@
-
 import 'package:door_care/bloc/onboarding_bloc/onboarding_bloc.dart';
 import 'package:door_care/view/feature/onboarding/widget/onboarding_content_widget.dart';
 import 'package:flutter/material.dart';

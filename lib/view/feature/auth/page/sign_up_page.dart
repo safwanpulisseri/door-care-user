@@ -1,7 +1,14 @@
+import 'dart:developer';
+import 'package:door_care/bloc/auth_bloc/auth_bloc.dart';
 import 'package:door_care/view/feature/auth/page/verification_code.dart';
+import 'package:door_care/view/feature/auth/util/auth_util.dart';
+import 'package:door_care/view/feature/auth/widget/loading_dialog.dart';
+import 'package:door_care/view/widget/appbar_widget.dart';
+import 'package:door_care/view/widget/padding_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../theme/color/app_color.dart';
-import '../../onboarding/widget/custom_elevated_button.dart';
+import '../widget/auth_button.dart';
 import '../widget/auth_text_formfield.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -12,200 +19,122 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController secondNameController = TextEditingController();
-  final TextEditingController mobileController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _mobileController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
       TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _nameController.dispose();
+    _mobileController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        backgroundColor: AppColor.background,
-      ),
-      body: SafeArea(
-        child: Form(
-          key: formKey,
-          child: ListView(
-            children: [
-              Text(
-                'Sign Up',
-                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColor.secondary,
-                      fontSize: 35,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
-                child: AuthTextFormField(
-                  controller: firstNameController,
-                  labelText: 'First Name',
-                  hintText: 'Enter your first name',
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your first name';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
-                child: AuthTextFormField(
-                  controller: secondNameController,
-                  labelText: 'Last Name',
-                  hintText: 'Enter your last name',
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your last name';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
-                child: AuthTextFormField(
-                  controller: mobileController,
-                  textInputType: TextInputType.number,
-                  labelText: 'Mobile Number',
-                  hintText: 'Enter your mobile number',
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your mobile number';
-                    } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
-                      return 'Please enter a valid 10-digit mobile number';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
-                child: AuthTextFormField(
-                  controller: emailController,
-                  labelText: 'E-mail',
-                  hintText: 'Enter your email',
-                  textInputType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
-                    } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                        .hasMatch(value)) {
-                      return 'Please enter a valid email address';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
-                child: AuthTextFormField(
-                  controller: passwordController,
-                  labelText: 'Password',
-                  hintText: 'Enter your password',
-                  obscureText: true, // Hide the password
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
-                    } else if (value.length < 6) {
-                      return 'Password must be at least 6 characters long';
-                    }
-                    return null;
-                  },
-                  showPasswordToggle: true,
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
-                child: AuthTextFormField(
-                  controller: confirmPasswordController,
-                  labelText: 'Confirm Password',
-                  hintText: 'Re-Enter your password',
-                  obscureText: true, // Hide the password with ****
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please confirm your password';
-                    } else if (value != passwordController.text) {
-                      return 'Passwords do not match';
-                    }
-                    return null;
-                  },
-                  showPasswordToggle: true,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: CustomElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (ctx) => const OtpVerificationPage(),
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthLoadingState) {
+          log("Loading");
+          LoadingDialog.show(context);
+        }
+      },
+      child: Scaffold(
+        appBar: const AppBarSingle(),
+        body: SafeArea(
+          child: Form(
+            key: formKey,
+            child: PaddingWidget(
+              child: ListView(
+                children: [
+                  Text(
+                    'Sign Up',
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: AppColor.secondary,
+                          fontSize: 35,
                         ),
-                      );
-                    }
-                  },
-                  text: 'Sign Up',
-                  backgroundColor: AppColor.primary,
-                  textColor: AppColor.background,
-                  fontSize: 18,
-                  width: double.infinity,
-                  height: 50,
-                ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  AuthTextFormField(
+                    controller: _nameController,
+                    labelText: 'Name',
+                    hintText: 'Enter your name',
+                    validator: validateName,
+                  ),
+                  AuthTextFormField(
+                    controller: _mobileController,
+                    textInputType: TextInputType.number,
+                    labelText: 'Mobile Number',
+                    hintText: 'Enter your mobile number',
+                    validator: validateMobileNumber,
+                  ),
+                  AuthTextFormField(
+                    controller: _emailController,
+                    labelText: 'E-mail',
+                    hintText: 'Enter your email',
+                    textInputType: TextInputType.emailAddress,
+                    validator: validateEmail,
+                  ),
+                  AuthTextFormField(
+                    controller: _passwordController,
+                    labelText: 'Password',
+                    hintText: 'Enter your password',
+                    obscureText: true,
+                    validator: validatePassword,
+                    showPasswordToggle: true,
+                  ),
+                  AuthTextFormField(
+                    controller: _confirmPasswordController,
+                    labelText: 'Confirm Password',
+                    hintText: 'Re-Enter your password',
+                    obscureText: true,
+                    validator: (value) => validateConfirmPassword(
+                        value, _passwordController.text),
+                    showPasswordToggle: true,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  AuthButton(
+                    buttonText: "Sign Up",
+                    navigationTitle: 'Already have an Account? ',
+                    navigationSubtitle: 'Sign in',
+                    buttonCallback: () {
+                      context.read<AuthBloc>().add(AccountCreateAuthEvent(
+                            name: _nameController.text,
+                            mobile: _mobileController.text,
+                            confirmPassword: _confirmPasswordController.text,
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          ));
+                      if (formKey.currentState!.validate()) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => const OtpVerificationPage(),
+                          ),
+                        );
+                      }
+                    },
+                    textCallback: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                ],
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (ctx) => const OtpVerificationPage(),
-                    ),
-                  );
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Already have an Account? ',
-                      style:
-                          Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                color: AppColor.secondary,
-                                fontSize: 18,
-                              ),
-                    ),
-                    Text(
-                      'Sign in',
-                      style:
-                          Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                color: AppColor.primary,
-                                fontSize: 18,
-                              ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-            ],
+            ),
           ),
         ),
       ),

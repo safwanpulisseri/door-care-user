@@ -1,9 +1,10 @@
+import 'package:door_care/view/feature/auth/widget/auth_button.dart';
 import 'package:door_care/view/feature/home/page/home.dart';
 import 'package:door_care/view/theme/color/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
-import '../../onboarding/widget/custom_elevated_button.dart';
+import '../../../widget/appbar_widget.dart';
 
 class OtpVerificationPage extends StatelessWidget {
   const OtpVerificationPage({super.key});
@@ -34,15 +35,7 @@ class OtpVerificationPage extends StatelessWidget {
       ),
     );
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        backgroundColor: AppColor.background,
-      ),
+      appBar: const AppBarSingle(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
@@ -86,16 +79,29 @@ class OtpVerificationPage extends StatelessWidget {
               },
             ),
             const SizedBox(height: 32),
-            CustomElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (ctx) => const HomePage()));
-              },
-              text: 'Continue',
-              fontSize: 18,
-              width: double.infinity,
-              height: 50,
-            ),
+            // CustomElevatedButton(
+            //   onPressed: () {
+            //     Navigator.push(context,
+            //         MaterialPageRoute(builder: (ctx) => const HomePage()));
+            //   },
+            //   text: 'Continue',
+            //   fontSize: 18,
+            //   width: double.infinity,
+            //   height: 50,
+            // ),
+            AuthButton(
+                buttonText: "Continue",
+                buttonCallback: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomePage()));
+                },
+                textCallback: () {
+                  Navigator.pop(context);
+                },
+                navigationTitle: "Cancel? ",
+                navigationSubtitle: "OTP Verification"),
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

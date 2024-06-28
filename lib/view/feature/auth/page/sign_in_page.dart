@@ -1,14 +1,16 @@
 import 'dart:developer';
-
 import 'package:door_care/view/feature/auth/page/sign_up_page.dart';
+import 'package:door_care/view/feature/auth/util/auth_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../bloc/auth_bloc/auth_bloc.dart';
 import '../../../util/svg_asset.dart';
 import '../../../widget/app_logo_widget.dart';
+import '../../navigation_menu/page/home_navigation_menu.dart';
 import '../widget/auth_button.dart';
 import '../widget/auth_title_widget.dart';
 import '../widget/auth_text_formfield.dart';
+import '../widget/loading_dialog.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -21,24 +23,32 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final AuthBloc _authBloc = AuthBloc();
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _authBloc.close();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-      bloc: _authBloc,
       listener: (context, state) {
-        if (state is AuthLoading) {
+        if (state is AuthLoadingState) {
           log("loading...");
-          // LoadingDialog.show(context);
+          LoadingDialog.show(context);
+        }
+        if (state is AuthSuccessState) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (_) => const HomeNavigationMenu()),
+            (route) => false,
+          );
+        }
+        if (state is AuthFailState) {
+          Navigator.pop(context);
         }
       },
       child: Scaffold(
@@ -47,7 +57,7 @@ class _SignInPageState extends State<SignInPage> {
             key: _formKey,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
+              child: ListView(
                 children: [
                   const Spacer(flex: 2),
                   const AppLogoWidget(),
@@ -60,15 +70,7 @@ class _SignInPageState extends State<SignInPage> {
                     controller: _emailController,
                     labelText: 'E-mail',
                     hintText: 'Enter your email',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                          .hasMatch(value)) {
-                        return 'Please enter a valid email address';
-                      }
-                      return null;
-                    },
+                    validator: validateEmail,
                     prefixIcon: AppSvgPath.mailLogo,
                   ),
                   const Spacer(flex: 1),
@@ -76,15 +78,8 @@ class _SignInPageState extends State<SignInPage> {
                     controller: _passwordController,
                     labelText: 'Password',
                     hintText: 'Enter your password',
-                    obscureText: true, // Hide the password
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
-                      } else if (value.length < 6) {
-                        return 'Password must be at least 6 characters long';
-                      }
-                      return null;
-                    },
+                    obscureText: true,
+                    validator: validatePassword,
                     prefixIcon: AppSvgPath.passwordLogo,
                     showPasswordToggle: true,
                   ),
@@ -94,12 +89,13 @@ class _SignInPageState extends State<SignInPage> {
                     navigationTitle: 'Create a New Account? ',
                     navigationSubtitle: 'Sign up',
                     buttonCallback: () {
-                      _authBloc.add(
-                        EmailSignInAuthEvent(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                        ),
-                      );
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      context.read<AuthBloc>().add(
+                            EmailSignInAuthEvent(
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            ),
+                          );
                     },
                     textCallback: () {
                       Navigator.push(

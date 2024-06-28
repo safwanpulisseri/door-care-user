@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../theme/color/app_color.dart';
 
 class AuthButton extends StatelessWidget {
