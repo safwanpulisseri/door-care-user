@@ -28,7 +28,6 @@ class AuthData {
     required String mobile,
     required String email,
     required String password,
-    required String confirmPassword,
   }) async {
     log("signup in dio");
     try {
@@ -37,7 +36,6 @@ class AuthData {
         'mobile': mobile,
         'email': email,
         'password': password,
-        'confirmPassword': confirmPassword
       });
       return response;
     } catch (e) {

@@ -31,4 +31,35 @@ class AuthRepo {
       throw Exception();
     }
   }
+
+  Future<UserModel> userRegistration({
+    required String name,
+    required String mobile,
+    required String email,
+    required String password,
+    //  required String confirmPassword,
+  }) async {
+    try {
+      var response = await _authData.signUp(
+        name: name,
+        mobile: mobile,
+        email: email,
+        password: password,
+        //  confirmPassword: confirmPassword,
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData =
+            response.data['user'] as Map<String, dynamic>;
+        final UserModel userModel = UserModel.fromMap(responseData);
+        return userModel;
+      } else {
+        log('Login failed${response.statusCode}');
+        throw Exception();
+      }
+    } catch (e) {
+      log(e.toString());
+      throw Exception();
+    }
+  }
 }

@@ -22,12 +22,12 @@ final class AccountCreateAuthEvent extends AuthEvent {
   final String mobile;
   final String email;
   final String password;
-  final String confirmPassword;
+  //final String confirmPassword;
 
   const AccountCreateAuthEvent({
     required this.name,
     required this.mobile,
-    required this.confirmPassword,
+    //required this.confirmPassword,
     required this.email,
     required this.password,
   });

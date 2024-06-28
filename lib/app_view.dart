@@ -11,7 +11,7 @@ class MyAppView extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.theme,
-      home: const SignUpPage(),
+      home: const SplashPage(),
     );
   }
 }

@@ -11,7 +11,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(this._authRepo) : super(AuthInitialState()) {
     on<EmailSignInAuthEvent>(
       (event, emit) async {
-        log("helljksdalkfhaskudhfkuo");
+        log("Email Auth");
 
         emit(AuthLoadingState());
         try {
@@ -27,11 +27,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       },
     );
     on<AccountCreateAuthEvent>(
-      (event, emit) {
-        log("hai");
+      (event, emit) async {
+        log("User Registartion");
         log("${event.name} name");
         log("${event.mobile} mobile");
+        log("${event.email} mail");
+
         emit(AuthLoadingState());
+        try {
+          final UserModel userModel = await _authRepo.userRegistration(
+            name: event.name,
+            mobile: event.mobile,
+            email: event.email,
+            password: event.password,
+            // confirmPassword: event.confirmPassword,
+          );
+          log("user model -> $userModel");
+          emit(AuthSuccessState(userModel: userModel));
+        } catch (e) {
+          emit(AuthFailState());
+        }
       },
     );
   }

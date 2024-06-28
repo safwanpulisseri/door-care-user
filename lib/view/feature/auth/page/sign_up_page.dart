@@ -8,6 +8,7 @@ import 'package:door_care/view/widget/padding_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../theme/color/app_color.dart';
+import '../../navigation_menu/page/home_navigation_menu.dart';
 import '../widget/auth_button.dart';
 import '../widget/auth_text_formfield.dart';
 
@@ -23,8 +24,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  //final TextEditingController _confirmPasswordController =
+  //    TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
@@ -34,7 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
     _mobileController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
+    //  _confirmPasswordController.dispose();
   }
 
   @override
@@ -42,8 +43,18 @@ class _SignUpPageState extends State<SignUpPage> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthLoadingState) {
-          log("Loading");
+          log("loading...");
           LoadingDialog.show(context);
+        }
+        if (state is AuthSuccessState) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (_) => const HomeNavigationMenu()),
+            (route) => false,
+          );
+        }
+        if (state is AuthFailState) {
+          Navigator.pop(context);
         }
       },
       child: Scaffold(
@@ -92,15 +103,15 @@ class _SignUpPageState extends State<SignUpPage> {
                     validator: validatePassword,
                     showPasswordToggle: true,
                   ),
-                  AuthTextFormField(
-                    controller: _confirmPasswordController,
-                    labelText: 'Confirm Password',
-                    hintText: 'Re-Enter your password',
-                    obscureText: true,
-                    validator: (value) => validateConfirmPassword(
-                        value, _passwordController.text),
-                    showPasswordToggle: true,
-                  ),
+                  // AuthTextFormField(
+                  //   controller: _confirmPasswordController,
+                  //   labelText: 'Confirm Password',
+                  //   hintText: 'Re-Enter your password',
+                  //   obscureText: true,
+                  //   validator: (value) => validateConfirmPassword(
+                  //       value, _passwordController.text),
+                  //   showPasswordToggle: true,
+                  // ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -109,20 +120,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     navigationTitle: 'Already have an Account? ',
                     navigationSubtitle: 'Sign in',
                     buttonCallback: () {
-                      context.read<AuthBloc>().add(AccountCreateAuthEvent(
-                            name: _nameController.text,
-                            mobile: _mobileController.text,
-                            confirmPassword: _confirmPasswordController.text,
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                          ));
                       if (formKey.currentState!.validate()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) => const OtpVerificationPage(),
-                          ),
-                        );
+                        context.read<AuthBloc>().add(AccountCreateAuthEvent(
+                              name: _nameController.text,
+                              mobile: _mobileController.text,
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            ));
                       }
                     },
                     textCallback: () {
