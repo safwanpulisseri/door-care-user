@@ -1,18 +1,22 @@
 import 'dart:developer';
 
-import '../service/auth_service.dart';
+import 'package:door_care/feature/auth/data/service/local/auth_local_service.dart';
+
+import '../service/remote/auth_remote_service.dart';
 import '../model/user_model.dart';
 
 class AuthRepo {
-  final AuthService _AuthService;
-  AuthRepo(this._AuthService);
+  final AuthRemoteService _authService;
+  final AuthLocalService _authLocalService;
+
+  AuthRepo(this._authService, this._authLocalService);
 
   Future<UserModel> emailSignIn({
     required String email,
     required String password,
   }) async {
     try {
-      var response = await _AuthService.signIn(
+      var response = await _authService.signIn(
         email: email,
         password: password,
       );
@@ -21,6 +25,7 @@ class AuthRepo {
         final Map<String, dynamic> responseData =
             response.data['data'] as Map<String, dynamic>;
         final UserModel userModel = UserModel.fromMap(responseData);
+        _authLocalService.saveUser(userModel);
         return userModel;
       } else {
         log('Login failed${response.statusCode}');
@@ -39,7 +44,7 @@ class AuthRepo {
     required String password,
   }) async {
     try {
-      var response = await _AuthService.signUp(
+      var response = await _authService.signUp(
         name: name,
         mobile: mobile,
         email: email,

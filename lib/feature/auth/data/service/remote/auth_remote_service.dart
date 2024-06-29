@@ -1,10 +1,12 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 
-class AuthService {
+class AuthRemoteService {
   final String _link = "http://10.0.2.2:3000/api/user/"; // For android
   //final String _link = "http://127.0.0.1:3000/api/user/login"; // For iOS simulator
   final dio = Dio();
+
+  //User sign in
   Future<Response<dynamic>> signIn({
     required String email,
     required String password,
@@ -15,7 +17,7 @@ class AuthService {
         'email': email,
         'password': password,
       });
-
+      log("success");
       return response;
     } catch (e) {
       log('Error during login $e');
@@ -23,6 +25,7 @@ class AuthService {
     }
   }
 
+  //User sign up
   Future<Response<dynamic>> signUp({
     required String name,
     required String mobile,

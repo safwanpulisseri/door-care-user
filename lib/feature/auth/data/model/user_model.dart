@@ -38,11 +38,11 @@ class UserModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
+      '_id': id,
       'name': name,
       'email': email,
       'mobile': mobile,
-      'profileImg': profileImg,
+      'profile_img': profileImg,
       'isBlocked': isBlocked,
     };
   }

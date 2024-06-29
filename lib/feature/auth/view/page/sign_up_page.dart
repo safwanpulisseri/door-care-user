@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:door_care/feature/auth/bloc/auth_bloc/auth_bloc.dart';
-import 'package:door_care/feature/auth/view/page/verification_code.dart';
 import 'package:door_care/feature/auth/view/util/auth_util.dart';
 import 'package:door_care/feature/auth/view/widget/loading_dialog.dart';
 import 'package:door_care/core/widget/appbar_widget.dart';
@@ -79,28 +78,28 @@ class _SignUpPageState extends State<SignUpPage> {
                     controller: _nameController,
                     labelText: 'Name',
                     hintText: 'Enter your name',
-                    validator: validateName,
+                    validator: AuthUtil.validateName,
                   ),
                   AuthTextFormField(
                     controller: _mobileController,
                     textInputType: TextInputType.number,
                     labelText: 'Mobile Number',
                     hintText: 'Enter your mobile number',
-                    validator: validateMobileNumber,
+                    validator: AuthUtil.validateMobileNumber,
                   ),
                   AuthTextFormField(
                     controller: _emailController,
                     labelText: 'E-mail',
                     hintText: 'Enter your email',
                     textInputType: TextInputType.emailAddress,
-                    validator: validateEmail,
+                    validator: AuthUtil.validateEmail,
                   ),
                   AuthTextFormField(
                     controller: _passwordController,
                     labelText: 'Password',
                     hintText: 'Enter your password',
                     obscureText: true,
-                    validator: validatePassword,
+                    validator: AuthUtil.validatePassword,
                     showPasswordToggle: true,
                   ),
                   // AuthTextFormField(

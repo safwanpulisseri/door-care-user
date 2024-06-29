@@ -1,6 +1,7 @@
 import 'package:door_care/app_view.dart';
 import 'package:door_care/feature/auth/bloc/auth_bloc/auth_bloc.dart';
-import 'package:door_care/feature/auth/data/service/auth_service.dart';
+import 'package:door_care/feature/auth/data/service/local/auth_local_service.dart';
+import 'package:door_care/feature/auth/data/service/remote/auth_remote_service.dart';
 import 'package:door_care/feature/auth/data/repository/auth_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +13,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(create: (context) => AuthRepo(AuthService())),
+        RepositoryProvider(
+            create: (context) =>
+                AuthRepo(AuthRemoteService(), AuthLocalService())),
       ],
       child: MultiBlocProvider(
         providers: [
