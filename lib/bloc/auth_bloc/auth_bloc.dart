@@ -40,7 +40,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             mobile: event.mobile,
             email: event.email,
             password: event.password,
-            // confirmPassword: event.confirmPassword,
           );
           log("user model -> $userModel");
           emit(AuthSuccessState(userModel: userModel));

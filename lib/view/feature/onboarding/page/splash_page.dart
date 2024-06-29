@@ -1,4 +1,4 @@
-import 'package:door_care/view/feature/onboarding/page/onboarding_page.dart';
+import 'package:door_care/view/feature/onboarding/page/onboarding_home.dart';
 import 'package:door_care/view/theme/color/app_color.dart';
 import 'package:door_care/view/util/svg_asset.dart';
 import 'package:flutter/material.dart';
@@ -13,25 +13,27 @@ class SplashPage extends StatelessWidget {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => const OnboardingPage(),
+            builder: (context) => const OnboardingScreen(),
           ),
           (route) => false);
     });
     return Scaffold(
       backgroundColor: AppColor.primary,
       body: SafeArea(
-          child: SizedBox(
-              width: double.infinity,
-              height: double.infinity,
-              child: Column(
-                children: [
-                  const Spacer(flex: 4),
-                  SvgPicture.asset(AppSvgPath.splashLogo),
-                  const Spacer(
-                    flex: 1,
-                  )
-                ],
-              ))),
+        child: SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: Column(
+            children: [
+              const Spacer(flex: 4),
+              SvgPicture.asset(AppSvgPath.splashLogo),
+              const Spacer(
+                flex: 1,
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

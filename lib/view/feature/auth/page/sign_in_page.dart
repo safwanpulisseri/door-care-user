@@ -59,13 +59,13 @@ class _SignInPageState extends State<SignInPage> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: ListView(
                 children: [
-                  const Spacer(flex: 2),
+                  const SizedBox(height: 50),
                   const AppLogoWidget(),
                   const SizedBox(height: 10),
                   const AuthTitleWidget(
                     title: 'Sign in',
                   ),
-                  const Spacer(flex: 1),
+                  const Spacer(flex: 2),
                   AuthTextFormField(
                     controller: _emailController,
                     labelText: 'E-mail',
@@ -83,7 +83,9 @@ class _SignInPageState extends State<SignInPage> {
                     prefixIcon: AppSvgPath.passwordLogo,
                     showPasswordToggle: true,
                   ),
-                  const Spacer(flex: 2),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   AuthButton(
                     buttonText: "Sign In",
                     navigationTitle: 'Create a New Account? ',
@@ -106,7 +108,7 @@ class _SignInPageState extends State<SignInPage> {
                       );
                     },
                   ),
-                  const Spacer(flex: 7),
+                  const Spacer(flex: 5),
                 ],
               ),
             ),

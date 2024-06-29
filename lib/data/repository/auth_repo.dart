@@ -37,7 +37,6 @@ class AuthRepo {
     required String mobile,
     required String email,
     required String password,
-    //  required String confirmPassword,
   }) async {
     try {
       var response = await _authData.signUp(
@@ -45,7 +44,6 @@ class AuthRepo {
         mobile: mobile,
         email: email,
         password: password,
-        //  confirmPassword: confirmPassword,
       );
 
       if (response.statusCode == 200) {

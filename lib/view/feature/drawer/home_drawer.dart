@@ -3,6 +3,8 @@ import 'package:door_care/view/theme/color/app_color.dart';
 import 'package:door_care/view/util/png_asset.dart';
 import 'package:flutter/material.dart';
 
+import '../auth/page/sign_in_page.dart';
+
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
 
@@ -14,8 +16,10 @@ class CustomDrawer extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (ctx) => UserDetailsPage()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (ctx) => UserDetailsPage()),
+              );
             },
             child: Padding(
               padding: const EdgeInsets.only(top: 70, left: 10),
@@ -55,23 +59,37 @@ class CustomDrawer extends StatelessWidget {
           ),
           Expanded(
             child: ListView(
-              children: const [
-                DrawerItem(icon: Icons.calendar_today, text: 'My Bookings'),
-                DrawerItem(icon: Icons.payment, text: 'Payments Methods'),
-                DrawerItem(icon: Icons.help_outline, text: 'How to use'),
-                DrawerItem(icon: Icons.notifications, text: 'Notification'),
-                DrawerItem(icon: Icons.privacy_tip, text: 'Privacy Policy'),
-                DrawerItem(icon: Icons.info, text: 'About us'),
-                DrawerItem(icon: Icons.support, text: 'Support'),
-                DrawerItem(icon: Icons.share, text: 'Share App'),
-                DrawerItem(icon: Icons.logout, text: 'Sign Out'),
+              children: [
+                const DrawerItem(
+                    icon: Icons.calendar_today, text: 'My Bookings'),
+                const DrawerItem(icon: Icons.payment, text: 'Payments Methods'),
+                const DrawerItem(icon: Icons.help_outline, text: 'How to use'),
+                const DrawerItem(
+                    icon: Icons.notifications, text: 'Notification'),
+                const DrawerItem(
+                    icon: Icons.privacy_tip, text: 'Privacy Policy'),
+                const DrawerItem(icon: Icons.info, text: 'About us'),
+                const DrawerItem(icon: Icons.support, text: 'Support'),
+                const DrawerItem(icon: Icons.share, text: 'Share App'),
+                DrawerItem(
+                  icon: Icons.logout,
+                  text: 'Sign Out',
+                  onTap: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => const SignInPage()),
+                      (Route<dynamic> route) => false,
+                    );
+                  },
+                ),
               ],
             ),
           ),
           Container(
             decoration: BoxDecoration(
-                color: AppColor.toneThree.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(20)),
+              color: AppColor.toneThree.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(20),
+            ),
             height: 40,
             width: 250,
             child: const Row(
@@ -108,11 +126,13 @@ class CustomDrawer extends StatelessWidget {
 class DrawerItem extends StatelessWidget {
   final IconData icon;
   final String text;
+  final VoidCallback? onTap;
 
   const DrawerItem({
     super.key,
     required this.icon,
     required this.text,
+    this.onTap,
   });
 
   @override
@@ -120,7 +140,7 @@ class DrawerItem extends StatelessWidget {
     return ListTile(
       leading: Icon(icon, color: Colors.white),
       title: Text(text, style: const TextStyle(color: Colors.white)),
-      onTap: () {},
+      onTap: onTap,
     );
   }
 }
