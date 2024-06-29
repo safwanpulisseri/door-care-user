@@ -11,6 +11,15 @@ class AuthRepo {
 
   AuthRepo(this._authService, this._authLocalService);
 
+  Future<UserModel?> getUser() async {
+    final UserModel? userModel = await _authLocalService.getUser();
+    if (userModel != null) {
+      return userModel;
+    } else {
+      return null;
+    }
+  }
+
   Future<UserModel> emailSignIn({
     required String email,
     required String password,

@@ -19,7 +19,10 @@ class MyApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => AuthBloc(context.read<AuthRepo>())),
+          BlocProvider(
+            create: (context) =>
+                AuthBloc(context.read<AuthRepo>())..add(CheckUserEvent()),
+          )
         ],
         child: const MyAppView(),
       ),

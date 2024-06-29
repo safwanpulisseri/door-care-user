@@ -15,7 +15,7 @@ final class AuthLocalService {
   }
 
   // Remove user data
-  Future<void> removeUser() async {
+  Future<void> removeUser() async { 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(_userKey);
   }
