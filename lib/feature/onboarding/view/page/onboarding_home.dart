@@ -1,8 +1,8 @@
 import 'package:door_care/core/theme/color/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:onboarding/onboarding.dart';
-import '../../../auth/view/const/onboarding_model_list.dart';
-import 'package:door_care/feature/auth/view/model/onboarding_model.dart';
+import '../const/onboarding_model_list.dart';
+import 'package:door_care/feature/onboarding/view/model/onboarding_model.dart';
 
 import '../../../auth/view/page/sign_in_page.dart';
 

@@ -25,7 +25,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _passwordController = TextEditingController();
   //final TextEditingController _confirmPasswordController =
   //    TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -60,7 +60,7 @@ class _SignUpPageState extends State<SignUpPage> {
         appBar: const AppBarSingle(),
         body: SafeArea(
           child: Form(
-            key: formKey,
+            key: _formKey,
             child: PaddingWidget(
               child: ListView(
                 children: [
@@ -89,13 +89,14 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   AuthTextFormField(
                     controller: _emailController,
+                    textInputType: TextInputType.emailAddress,
                     labelText: 'E-mail',
                     hintText: 'Enter your email',
-                    textInputType: TextInputType.emailAddress,
                     validator: AuthUtil.validateEmail,
                   ),
                   AuthTextFormField(
                     controller: _passwordController,
+                    textInputType: TextInputType.visiblePassword,
                     labelText: 'Password',
                     hintText: 'Enter your password',
                     obscureText: true,
@@ -119,13 +120,15 @@ class _SignUpPageState extends State<SignUpPage> {
                     navigationTitle: 'Already have an Account? ',
                     navigationSubtitle: 'Sign in',
                     buttonCallback: () {
-                      if (formKey.currentState!.validate()) {
-                        context.read<AuthBloc>().add(AccountCreateAuthEvent(
-                              name: _nameController.text,
-                              mobile: _mobileController.text,
-                              email: _emailController.text,
-                              password: _passwordController.text,
-                            ));
+                      if (_formKey.currentState!.validate()) {
+                        context.read<AuthBloc>().add(
+                              AccountCreateAuthEvent(
+                                name: _nameController.text,
+                                mobile: _mobileController.text,
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                              ),
+                            );
                       }
                     },
                     textCallback: () {
