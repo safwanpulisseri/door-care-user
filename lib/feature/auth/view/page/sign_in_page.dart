@@ -1,5 +1,6 @@
 import 'package:door_care/feature/auth/view/page/sign_up_page.dart';
 import 'package:door_care/feature/auth/view/util/auth_util.dart';
+import 'package:door_care/feature/auth/view/widget/social_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -55,7 +56,7 @@ class _SignInPageState extends State<SignInPage> {
       child: Scaffold(
         body: SafeArea(
           child: Form(
-            key: _formKey, 
+            key: _formKey,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: SingleChildScrollView(
@@ -114,6 +115,9 @@ class _SignInPageState extends State<SignInPage> {
                           );
                         },
                       ),
+                      const Spacer(flex: 1),
+                      const SocialAuthWidget(),
+                      const Spacer(flex: 1),
                       const Spacer(),
                       const TermsAndConditionsWidget(),
                       const SizedBox(height: 16),

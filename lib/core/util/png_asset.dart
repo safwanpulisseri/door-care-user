@@ -7,4 +7,6 @@ final class AppPngPath {
   static const homeCleanOne = "assets/png/home_clean_one.png";
   static const homeCleanTwo = "assets/png/home_clean_two.png";
   static const joinOurTeam = "assets/png/join_our_team.png";
+  static const google = "assets/png/google.png";
+  
 }
