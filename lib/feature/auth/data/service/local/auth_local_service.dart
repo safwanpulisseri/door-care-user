@@ -1,7 +1,5 @@
 import 'dart:developer';
-
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../model/user_model.dart';
 
 final class AuthLocalService {
@@ -15,7 +13,7 @@ final class AuthLocalService {
   }
 
   // Remove user data
-  Future<void> removeUser() async { 
+  Future<void> removeUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(_userKey);
   }

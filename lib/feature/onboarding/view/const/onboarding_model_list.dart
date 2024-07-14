@@ -1,5 +1,5 @@
 import 'package:door_care/core/util/png_asset.dart';
-import 'package:door_care/feature/auth/view/model/onboarding_model.dart';
+import 'package:door_care/feature/onboarding/view/model/onboarding_model.dart';
 
 final class OnboardingModelList {
   OnboardingModelList._();

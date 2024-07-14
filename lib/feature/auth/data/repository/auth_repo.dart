@@ -1,7 +1,5 @@
 import 'dart:developer';
-
 import 'package:door_care/feature/auth/data/service/local/auth_local_service.dart';
-
 import '../service/remote/auth_remote_service.dart';
 import '../model/user_model.dart';
 

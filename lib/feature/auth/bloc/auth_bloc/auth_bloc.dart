@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:door_care/feature/auth/data/model/user_model.dart';
 import 'package:door_care/feature/auth/data/repository/auth_repo.dart';
 import 'package:equatable/equatable.dart';

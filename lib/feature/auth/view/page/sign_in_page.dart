@@ -1,9 +1,11 @@
+import 'package:door_care/core/theme/color/app_color.dart';
 import 'package:door_care/feature/auth/view/page/sign_up_page.dart';
 import 'package:door_care/feature/auth/view/util/auth_util.dart';
 import 'package:door_care/feature/auth/view/widget/social_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:toastification/toastification.dart';
+import '../../../../core/widget/toastifiaction_widget.dart';
 import '../../bloc/auth_bloc/auth_bloc.dart';
 import '../../../../core/util/svg_asset.dart';
 import '../../../../core/widget/app_logo_widget.dart';
@@ -30,7 +32,6 @@ class _SignInPageState extends State<SignInPage> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-
     super.dispose();
   }
 
@@ -41,16 +42,30 @@ class _SignInPageState extends State<SignInPage> {
       listener: (context, state) {
         if (state is AuthLoadingState) {
           LoadingDialog.show(context);
-        }
-        if (state is AuthSuccessState) {
+        } else if (state is AuthSuccessState) {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (_) => const HomeNavigationMenu()),
             (route) => false,
           );
-        }
-        if (state is AuthFailState) {
+          ToastificationWidget.show(
+            context: context,
+            type: ToastificationType.success,
+            title: 'Success',
+            description: 'Successfully signed in!',
+            // backgroundColor: AppColor.toneEight,
+            // textColor: AppColor.background,
+          );
+        } else if (state is AuthFailState) {
           Navigator.pop(context);
+          ToastificationWidget.show(
+            context: context,
+            type: ToastificationType.error,
+            title: 'Error',
+            description: 'Failed to sign in. Please try again.',
+            // backgroundColor: AppColor.toneSeven,
+            // textColor: AppColor.background,
+          );
         }
       },
       child: Scaffold(
@@ -77,6 +92,7 @@ class _SignInPageState extends State<SignInPage> {
                       const SizedBox(height: 30),
                       AuthTextFormField(
                         controller: _emailController,
+                        textInputType: TextInputType.emailAddress,
                         labelText: 'E-mail',
                         hintText: 'Enter your email',
                         validator: AuthUtil.validateEmail,
@@ -85,6 +101,7 @@ class _SignInPageState extends State<SignInPage> {
                       const SizedBox(height: 20),
                       AuthTextFormField(
                         controller: _passwordController,
+                        textInputType: TextInputType.visiblePassword,
                         labelText: 'Password',
                         hintText: 'Enter your password',
                         obscureText: true,
@@ -98,13 +115,25 @@ class _SignInPageState extends State<SignInPage> {
                         navigationTitle: 'Create a New Account? ',
                         navigationSubtitle: 'Sign up',
                         buttonCallback: () {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          context.read<AuthBloc>().add(
-                                EmailSignInAuthEvent(
-                                  email: _emailController.text,
-                                  password: _passwordController.text,
-                                ),
-                              );
+                          if (_formKey.currentState?.validate() ?? false) {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            context.read<AuthBloc>().add(
+                                  EmailSignInAuthEvent(
+                                    email: _emailController.text,
+                                    password: _passwordController.text,
+                                  ),
+                                );
+                          } else {
+                            ToastificationWidget.show(
+                              context: context,
+                              type: ToastificationType.error,
+                              title: 'Validation Error',
+                              description:
+                                  'Please correct the errors in the form.',
+                              // backgroundColor: AppColor.toneSeven,
+                              // textColor: AppColor.background,
+                            );
+                          }
                         },
                         textCallback: () {
                           Navigator.push(
