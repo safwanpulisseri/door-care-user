@@ -76,5 +76,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       },
     );
+
+    on<AuthGoogleEvent>((event, emit) async {
+      try {
+        await _authRepo.googleAuth();
+      } catch (e) {}
+    });
   }
 }

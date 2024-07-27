@@ -1,3 +1,4 @@
+import 'package:door_care/core/theme/color/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 
@@ -10,8 +11,8 @@ class ToastificationWidget {
     ToastificationStyle style = ToastificationStyle.flatColored,
     Duration autoCloseDuration = const Duration(seconds: 5),
     Alignment alignment = Alignment.topRight,
-    Color? backgroundColor,
-    Color? textColor,
+   
+    
   }) {
     toastification.show(
       context: context,
@@ -20,16 +21,16 @@ class ToastificationWidget {
       autoCloseDuration: autoCloseDuration,
       title: Text(
         title,
-        style: TextStyle(color: textColor),
+        style: Theme.of(context).textTheme.labelLarge,
       ),
-      description: RichText(
-        text: TextSpan(
-          text: description,
-          style: TextStyle(color: textColor),
-        ),
+      description:Text(
+        title,
+       style: Theme.of(context).textTheme.labelLarge?.copyWith(
+        color: AppColor.toneThree,
+       ),
       ),
       alignment: alignment,
-      backgroundColor: backgroundColor,
+    
     );
   }
 }

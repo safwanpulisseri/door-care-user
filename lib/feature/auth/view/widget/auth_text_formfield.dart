@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/theme/color/app_color.dart';
@@ -9,7 +10,7 @@ class AuthTextFormField extends StatefulWidget {
   final String hintText;
   final String? Function(String?)? validator;
   final bool obscureText;
-  final String? prefixIcon;
+  final IconData prefixIcon;
   final bool showPasswordToggle;
   final TextInputType textInputType;
 
@@ -21,7 +22,7 @@ class AuthTextFormField extends StatefulWidget {
     this.textInputType = TextInputType.text,
     this.validator,
     this.obscureText = false,
-    this.prefixIcon,
+    required this.prefixIcon,
     this.showPasswordToggle = false,
   });
 
@@ -54,16 +55,7 @@ class _AuthTextFormFieldState extends State<AuthTextFormField> {
           decoration: InputDecoration(
             filled: true,
             fillColor: AppColor.textfield,
-            prefixIcon: widget.prefixIcon != null
-                ? Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: SvgPicture.asset(
-                      widget.prefixIcon!,
-                      width: 24.0,
-                      height: 24.0,
-                    ),
-                  )
-                : null, // Use prefixIcon if provided
+            prefixIcon: Icon(widget.prefixIcon),
             hintText: widget.hintText,
             hintStyle: const TextStyle(
               color: Colors.grey,
@@ -88,16 +80,13 @@ class _AuthTextFormFieldState extends State<AuthTextFormField> {
                       });
                     },
                     icon: Icon(
-                      _obscureText ? Icons.visibility : Icons.visibility_off,
+                      _obscureText ? IconlyLight.hide : IconlyLight.show,
                       color: Colors.grey,
                     ),
                   )
                 : null,
           ),
-          style: const TextStyle(
-            fontSize: 16.0,
-            color: Colors.black,
-          ),
+          style: Theme.of(context).textTheme.labelLarge,
         ),
         const SizedBox(height: 7)
       ],

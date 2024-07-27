@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRemoteService {
   final String _link = "http://10.0.2.2:3000/api/user/"; // For android
@@ -45,6 +46,28 @@ class AuthRemoteService {
     } catch (e) {
       log('Error during sign up$e');
       throw Exception();
+    }
+  }
+
+  //Google sign
+  Future<void> googleAuth() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn(
+      scopes: [
+        'email',
+        'https://www.googleapis.com/auth/userinfo.profile',
+      ],
+    );
+    try {
+      final GoogleSignInAccount? account = await googleSignIn.signIn();
+      if (account != null) {
+        final GoogleSignInAuthentication auth = await account.authentication;
+        // Use auth.idToken to send to your backend
+        log("${auth.idToken}");
+        // return account;
+      }
+    } catch (e) {
+      log(e.toString());
+      rethrow;
     }
   }
 }

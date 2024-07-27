@@ -6,6 +6,7 @@ import 'package:door_care/core/widget/appbar_widget.dart';
 import 'package:door_care/core/widget/padding_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import '../../../../core/theme/color/app_color.dart';
 import '../../../navigation_menu/page/home_navigation_menu.dart';
 import '../widget/auth_button.dart';
@@ -79,6 +80,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     labelText: 'Name',
                     hintText: 'Enter your name',
                     validator: AuthUtil.validateName,
+                    prefixIcon: IconlyLight.profile,
                   ),
                   AuthTextFormField(
                     controller: _mobileController,
@@ -86,6 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     labelText: 'Mobile Number',
                     hintText: 'Enter your mobile number',
                     validator: AuthUtil.validateMobileNumber,
+                        prefixIcon: IconlyLight.call,
                   ),
                   AuthTextFormField(
                     controller: _emailController,
@@ -93,6 +96,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     labelText: 'E-mail',
                     hintText: 'Enter your email',
                     validator: AuthUtil.validateEmail,
+                    prefixIcon: IconlyLight.message,
                   ),
                   AuthTextFormField(
                     controller: _passwordController,
@@ -102,6 +106,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     obscureText: true,
                     validator: AuthUtil.validatePassword,
                     showPasswordToggle: true,
+                    prefixIcon: IconlyLight.lock,
                   ),
                   // AuthTextFormField(
                   //   controller: _confirmPasswordController,
