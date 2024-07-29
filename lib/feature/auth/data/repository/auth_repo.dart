@@ -4,10 +4,10 @@ import '../service/remote/auth_remote_service.dart';
 import '../model/user_model.dart';
 
 class AuthRepo {
-  final AuthRemoteService _authService;
+  final AuthRemoteService _authRemoteService;
   final AuthLocalService _authLocalService;
 
-  AuthRepo(this._authService, this._authLocalService);
+  AuthRepo(this._authRemoteService, this._authLocalService);
 
   Future<UserModel?> getUser() async {
     final UserModel? userModel = await _authLocalService.getUser();
@@ -23,7 +23,7 @@ class AuthRepo {
     required String password,
   }) async {
     try {
-      var response = await _authService.signIn(
+      var response = await _authRemoteService.signIn(
         email: email,
         password: password,
       );
@@ -51,7 +51,7 @@ class AuthRepo {
     required String password,
   }) async {
     try {
-      var response = await _authService.signUp(
+      var response = await _authRemoteService.signUp(
         name: name,
         mobile: mobile,
         email: email,
@@ -71,5 +71,9 @@ class AuthRepo {
       log(e.toString());
       throw Exception();
     }
+  }
+
+  Future<void> googleAuth() async {
+    await _authRemoteService.googleAuth();
   }
 }

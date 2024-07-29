@@ -52,20 +52,20 @@ class UserDetailsPage extends StatelessWidget {
               radius: 50,
               backgroundImage: AssetImage(AppPngPath.homeCleanOne),
             ),
-            AuthTextFormField(
-              controller: _nameController,
-              labelText: 'Name',
-              hintText: 'Update your name',
+            // AuthTextFormField(
+            //   controller: _nameController,
+            //   labelText: 'Name',
+            //   hintText: 'Update your name',
               
-            ),
+            // ),
             const SizedBox(
               height: 10,
             ),
-            AuthTextFormField(
-              controller: _mobileNumberController,
-              labelText: 'Mobile Number',
-              hintText: 'Update your number',
-            ),
+            // AuthTextFormField(
+            //   controller: _mobileNumberController,
+            //   labelText: 'Mobile Number',
+            //   hintText: 'Update your number',
+            // ),
           ],
         ),
       ),

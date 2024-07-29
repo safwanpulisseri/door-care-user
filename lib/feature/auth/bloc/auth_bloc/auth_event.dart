@@ -32,3 +32,5 @@ final class AccountCreateAuthEvent extends AuthEvent {
     required this.password,
   });
 }
+
+final class AuthGoogleEvent extends AuthEvent {}
