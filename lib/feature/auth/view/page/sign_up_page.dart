@@ -49,7 +49,7 @@ class _SignUpPageState extends State<SignUpPage> {
         if (state is AuthSuccessState) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (_) => const HomeNavigationMenu()),
+            MaterialPageRoute(builder: (_) => HomeNavigationMenu()),
             (route) => false,
           );
         }
@@ -88,7 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     labelText: 'Mobile Number',
                     hintText: 'Enter your mobile number',
                     validator: AuthUtil.validateMobileNumber,
-                        prefixIcon: IconlyLight.call,
+                    prefixIcon: IconlyLight.call,
                   ),
                   AuthTextFormField(
                     controller: _emailController,

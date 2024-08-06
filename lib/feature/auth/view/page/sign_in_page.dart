@@ -6,7 +6,6 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:toastification/toastification.dart';
 import '../../../../core/widget/toastifiaction_widget.dart';
 import '../../bloc/auth_bloc/auth_bloc.dart';
-import '../../../../core/util/svg_asset.dart';
 import '../../../../core/widget/app_logo_widget.dart';
 import '../../../navigation_menu/page/home_navigation_menu.dart';
 import '../widget/auth_button.dart';
@@ -45,7 +44,7 @@ class _SignInPageState extends State<SignInPage> {
         } else if (state is AuthSuccessState) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (_) => const HomeNavigationMenu()),
+            MaterialPageRoute(builder: (_) => HomeNavigationMenu()),
             (route) => false,
           );
           ToastificationWidget.show(

@@ -3,6 +3,7 @@ import 'package:door_care/feature/auth/bloc/auth_bloc/auth_bloc.dart';
 import 'package:door_care/feature/auth/data/service/local/auth_local_service.dart';
 import 'package:door_care/feature/auth/data/service/remote/auth_remote_service.dart';
 import 'package:door_care/feature/auth/data/repository/auth_repo.dart';
+import 'package:door_care/feature/navigation_menu/bloc/bloc/navigation_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,14 +15,26 @@ class MyApp extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
-            create: (context) =>
-                AuthRepo(AuthRemoteService(), AuthLocalService())),
+          create: (context) =>
+              AuthRepo(AuthRemoteService(), AuthLocalService()),
+        ),
+        // RepositoryProvider(
+        //     create: (context) => FetchAllServiceRepo(
+        //           FetchAllServicesRemoteService(),
+        //         ))
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (context) =>
                 AuthBloc(context.read<AuthRepo>())..add(CheckUserEvent()),
+          ),
+          // BlocProvider(
+          //   create: (context) =>
+          //       FetchAllAddedServicesBloc(context.read<FetchAllServiceRepo>()),
+          // ),
+          BlocProvider(
+            create: (context) => NavigationBloc(),
           )
         ],
         child: const MyAppView(),
