@@ -5,6 +5,7 @@ import 'package:door_care/feature/home/data/service/remote/fetch_all_services_re
 import 'package:door_care/feature/home/widget/search_widget.dart';
 import 'package:door_care/core/theme/color/app_color.dart';
 import 'package:door_care/core/widget/padding_widget.dart';
+import 'package:door_care/feature/service/page/book_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/widget/opacity_container.dart';
@@ -87,9 +88,21 @@ class HomePage extends StatelessWidget {
                             itemCount: state.fetchAllServiceModel.length,
                             itemBuilder: (context, index) {
                               final service = state.fetchAllServiceModel[index];
-                              return ServiceCard(
-                                image: service.serviceImg,
-                                title: service.serviceName,
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ServiceDetailsPage(
+                                        service: service,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: ServiceCard(
+                                  image: service.serviceImg,
+                                  title: service.serviceName,
+                                ),
                               );
                             },
                           ),
@@ -97,8 +110,10 @@ class HomePage extends StatelessWidget {
                       } else if (state is FetchAllAddedServicesFailState) {
                         return const Center(
                             child: Text('Failed to fetch services'));
+                      } else {
+                        return const Center(
+                            child: Text('No Services Available'));
                       }
-                      return const SizedBox.shrink();
                     },
                   ),
                   const SizedBox(height: 24),

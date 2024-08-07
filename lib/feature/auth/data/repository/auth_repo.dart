@@ -62,6 +62,7 @@ class AuthRepo {
         final Map<String, dynamic> responseData =
             response.data['user'] as Map<String, dynamic>;
         final UserModel userModel = UserModel.fromMap(responseData);
+        _authLocalService.saveUser(userModel);
         return userModel;
       } else {
         log('Login failed${response.statusCode}');
@@ -73,7 +74,25 @@ class AuthRepo {
     }
   }
 
-  Future<void> googleAuth() async {
-    await _authRemoteService.googleAuth();
+  Future<UserModel> googleAuth() async {
+    try {
+      var response = await _authRemoteService.googleAuth();
+      if (response?.statusCode == 200) {
+        final Map<String, dynamic> responseData = response?.data['data'];
+        final UserModel userModel = UserModel.fromMap(responseData);
+        _authLocalService.saveUser(userModel);
+        return userModel;
+      } else {
+        log('Login failed${response?.statusCode}');
+        throw Exception();
+      }
+    } catch (e) {
+      log(e.toString());
+      throw Exception();
+    }
+  }
+
+  Future<void> signOut() async {
+    await _authLocalService.removeUser();
   }
 }

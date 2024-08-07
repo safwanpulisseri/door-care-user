@@ -34,3 +34,5 @@ final class AccountCreateAuthEvent extends AuthEvent {
 }
 
 final class AuthGoogleEvent extends AuthEvent {}
+
+final class SignOutEvent extends AuthEvent {}

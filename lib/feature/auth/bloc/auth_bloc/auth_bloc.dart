@@ -79,8 +79,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<AuthGoogleEvent>((event, emit) async {
       try {
-        await _authRepo.googleAuth();
-      } catch (e) {}
+        final UserModel userModel = await _authRepo.googleAuth();
+        emit(AuthSuccessState(userModel: userModel));
+      } catch (e) {
+        emit(AuthFailState());
+      }
+    });
+    on<SignOutEvent>((event, emit) async {
+      try {
+        await _authRepo.signOut();
+        emit(AuthSignedOutState());
+      } catch (e) {
+        emit(AuthFailState());
+      }
     });
   }
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import '../../../../core/theme/color/app_color.dart';
 
 class AuthTextFormField extends StatefulWidget {
