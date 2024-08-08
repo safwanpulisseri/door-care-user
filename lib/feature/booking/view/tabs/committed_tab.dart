@@ -3,10 +3,10 @@ import 'package:door_care/core/widget/padding_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../core/theme/color/app_color.dart';
+import '../../../../core/theme/color/app_color.dart';
 
-class TabScreenOne extends StatelessWidget {
-  const TabScreenOne({super.key});
+class TabScreenTwo extends StatelessWidget {
+  const TabScreenTwo({super.key});
 
   Widget _buildPendingContent() {
     return Scaffold(
@@ -69,7 +69,7 @@ class TabScreenOne extends StatelessWidget {
                     Chip(
                       side: BorderSide.none,
                       label: const Text(
-                        'Pending',
+                        'Committed',
                         style: TextStyle(color: AppColor.toneSix),
                       ),
                       backgroundColor: AppColor.toneSix.withOpacity(0.2),
@@ -165,13 +165,13 @@ class TabScreenOne extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.toneSeven.withOpacity(0.8),
+                      backgroundColor: AppColor.toneSix.withOpacity(0.8),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                     child: const Text(
-                      'Cancel',
+                      'Chat',
                       style: TextStyle(color: AppColor.background),
                     ),
                   ),

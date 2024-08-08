@@ -1,4 +1,4 @@
-import 'package:door_care/feature/booking/page/booking.dart';
+import 'package:door_care/feature/booking/view/page/booking.dart';
 import 'package:door_care/feature/home/page/home.dart';
 import 'package:door_care/core/theme/color/app_color.dart';
 import 'package:flutter/material.dart';

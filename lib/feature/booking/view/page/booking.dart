@@ -1,9 +1,9 @@
-import 'package:door_care/feature/booking/tabs/committed_tab.dart';
-import 'package:door_care/feature/booking/tabs/completed_tab.dart';
-import 'package:door_care/feature/booking/tabs/pending_tab.dart';
+import 'package:door_care/feature/booking/view/tabs/committed_tab.dart';
+import 'package:door_care/feature/booking/view/tabs/completed_tab.dart';
+import 'package:door_care/feature/booking/view/tabs/pending_tab.dart';
 import 'package:flutter/material.dart';
-import '../../../core/theme/color/app_color.dart';
-import '../../../core/widget/opacity_container.dart';
+import '../../../../core/theme/color/app_color.dart';
+import '../../../../core/widget/opacity_container.dart';
 
 class BookingPage extends StatefulWidget {
   const BookingPage({super.key});

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../../core/theme/color/app_color.dart';
-import '../../../core/widget/opacity_container.dart';
-import '../../home/data/model/fetch_all_service_model.dart';
+import '../../../../core/theme/color/app_color.dart';
+import '../../../../core/widget/opacity_container.dart';
+import '../../../home/data/model/fetch_all_service_model.dart';
+import 'stepper_home_widget.dart';
 
 class ServiceDetailsPage extends StatelessWidget {
   final FetchAllServiceModel service;
@@ -211,6 +211,56 @@ class ServiceDetailsPage extends StatelessWidget {
             ],
           ),
         ],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: AppColor.textfield,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ButtonStyle(
+                minimumSize: WidgetStateProperty.all(const Size(200, 50)),
+                backgroundColor: WidgetStateProperty.all(AppColor.textfield),
+                foregroundColor: WidgetStateProperty.all(
+                    AppColor.secondary.withOpacity(0.7)),
+                side: WidgetStateProperty.all(BorderSide(
+                  color: AppColor.toneThree.withOpacity(0.5),
+                  width: 2,
+                )),
+                shape: WidgetStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+              child: Text(
+                'Back',
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeStepperWidget()),
+                );
+              },
+              style: ButtonStyle(
+                minimumSize: WidgetStateProperty.all(const Size(200, 50)),
+                backgroundColor: WidgetStateProperty.all(AppColor.primary),
+                foregroundColor: WidgetStateProperty.all(Colors.white),
+                shape: WidgetStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+              child: Text('Book Now'),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:door_care/core/util/jason_asset.dart';
 import 'package:door_care/feature/drawer/home_drawer.dart';
 import 'package:door_care/feature/home/bloc/bloc/fetch_all_added_services_bloc.dart';
 import 'package:door_care/feature/home/data/repository/fetch_all_services_repo.dart';
@@ -5,9 +6,10 @@ import 'package:door_care/feature/home/data/service/remote/fetch_all_services_re
 import 'package:door_care/feature/home/widget/search_widget.dart';
 import 'package:door_care/core/theme/color/app_color.dart';
 import 'package:door_care/core/widget/padding_widget.dart';
-import 'package:door_care/feature/service/page/book_service.dart';
+import 'package:door_care/feature/service/view/page/book_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import '../../../core/widget/opacity_container.dart';
 import '../widget/join_our_team.dart';
 import '../widget/review_card.dart';
@@ -108,11 +110,31 @@ class HomePage extends StatelessWidget {
                           ),
                         );
                       } else if (state is FetchAllAddedServicesFailState) {
-                        return const Center(
-                            child: Text('Failed to fetch services'));
+                        return Center(
+                          child: Column(
+                            children: [
+                              Lottie.asset(AppJasonPath.failedToFetch,
+                                  height: 150, width: 150),
+                              const Text(
+                                'Failed to Fetch Services',
+                                style: TextStyle(color: AppColor.toneSeven),
+                              ),
+                            ],
+                          ),
+                        );
                       } else {
-                        return const Center(
-                            child: Text('No Services Available'));
+                        return Center(
+                          child: Column(
+                            children: [
+                              Lottie.asset(AppJasonPath.failedToFetch,
+                                  height: 150, width: 150),
+                              const Text(
+                                'No Services Available',
+                                style: TextStyle(color: AppColor.toneSeven),
+                              ),
+                            ],
+                          ),
+                        );
                       }
                     },
                   ),

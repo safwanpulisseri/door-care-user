@@ -3,10 +3,10 @@ import 'package:door_care/core/widget/padding_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../core/theme/color/app_color.dart';
+import '../../../../core/theme/color/app_color.dart';
 
-class TabScreenTwo extends StatelessWidget {
-  const TabScreenTwo({super.key});
+class TabScreenThree extends StatelessWidget {
+  const TabScreenThree({super.key});
 
   Widget _buildPendingContent() {
     return Scaffold(
@@ -69,10 +69,10 @@ class TabScreenTwo extends StatelessWidget {
                     Chip(
                       side: BorderSide.none,
                       label: const Text(
-                        'Committed',
-                        style: TextStyle(color: AppColor.toneSix),
+                        'Completed',
+                        style: TextStyle(color: AppColor.toneEight),
                       ),
-                      backgroundColor: AppColor.toneSix.withOpacity(0.2),
+                      backgroundColor: AppColor.toneOne.withOpacity(0.2),
                     ),
                   ],
                 ),
@@ -160,21 +160,31 @@ class TabScreenTwo extends StatelessWidget {
                   ],
                 ),
                 const Divider(),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.toneSix.withOpacity(0.8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Total : ₹465.00',
+                      style: TextStyle(
+                        color: AppColor.secondary,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    child: const Text(
-                      'Chat',
-                      style: TextStyle(color: AppColor.background),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColor.toneEight.withOpacity(0.8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text(
+                        'Pay',
+                        style: TextStyle(color: AppColor.background),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),
