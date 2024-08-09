@@ -20,6 +20,8 @@ class HomeStepperWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Ensure the StepperNavigationBloc state is initialized to the first page
+    //  context.read<StepperNavigationBloc>().add(const PageChangedEvent(0));
     return BlocBuilder<StepperNavigationBloc, StepperNavigationState>(
       builder: (context, state) {
         int selectedIndex = 0;
@@ -48,11 +50,7 @@ class HomeStepperWidget extends StatelessWidget {
             rightButtonText: 'Next',
             onNavigate: (int step) {
               int newIndex = selectedIndex + step;
-              // if (newIndex >= 0 && newIndex < _pages.length) {
-              //   context
-              //       .read<StepperNavigationBloc>()
-              //       .add(PageChangedEvent(newIndex));
-              // }
+
               // Navigate to HomePage when back is pressed on the first step
               if (newIndex < 0) {
                 Navigator.of(context).pushReplacement(
@@ -63,6 +61,10 @@ class HomeStepperWidget extends StatelessWidget {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (contex) => HomeNavigationMenu()),
                 );
+                // Ensure the StepperNavigationBloc state is initialized to the first page
+                context
+                    .read<StepperNavigationBloc>()
+                    .add(const PageChangedEvent(0));
               } else {
                 // Navigate within the steps
                 context

@@ -15,4 +15,6 @@ final class AppColor {
   static const Color toneSix = Color(0xFFEB833C);
   static const Color toneSeven = Color(0xFFCA3939);
   static const Color toneEight = Color(0xFF2A9721);
+  static const Color toneNine = Color(0xFF3FD9D7);
+  static const Color toneTen = Color(0xFFFFBC99);
 }
