@@ -8,9 +8,6 @@ import 'package:door_care/feature/service/bloc/bloc/navigation_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'feature/home/data/repository/fetch_all_services_repo.dart';
-import 'feature/home/data/service/remote/fetch_all_services_remote_service.dart';
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -31,10 +28,6 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 AuthBloc(context.read<AuthRepo>())..add(CheckUserEvent()),
           ),
-          // BlocProvider(
-          //   create: (context) =>
-          //       FetchAllAddedServicesBloc(context.read<FetchAllServiceRepo>()),
-          // ),
           BlocProvider(
             create: (context) => NavigationBloc(),
           ),

@@ -1,36 +1,49 @@
-import 'dart:developer';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../model/user_model.dart';
 
 final class AuthLocalService {
-  static const String _userKey = 'user_data';
+  static const String _storageKey = 'user_data_and_token';
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
-  // Save user data
-  Future<void> saveUser(UserModel user) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_userKey, user.toJson());
-    getUser();
+  // Save user data and token
+  Future<void> saveUser(UserModel user, String token) async {
+    final Map<String, dynamic> userData = {
+      'user': user.toJson(),
+      'token': token,
+    };
+    final String userDataJson = jsonEncode(userData);
+    await _secureStorage.write(key: _storageKey, value: userDataJson);
   }
 
-  // Remove user data
+  // Remove user data and token
   Future<void> removeUser() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_userKey);
+    await _secureStorage.delete(key: _storageKey);
   }
 
   // Check if user is logged in
   Future<bool> isUserLoggedIn() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.containsKey(_userKey);
+    final String? userDataJson = await _secureStorage.read(key: _storageKey);
+    return userDataJson != null;
   }
 
   // Get stored user data
   Future<UserModel?> getUser() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? userJson = prefs.getString(_userKey);
-    if (userJson != null) {
-      log(userJson);
+    final String? userDataJson = await _secureStorage.read(key: _storageKey);
+    if (userDataJson != null) {
+      final Map<String, dynamic> userData = jsonDecode(userDataJson);
+      final String userJson = userData['user'];
       return UserModel.fromJson(userJson);
+    }
+    return null;
+  }
+
+  // Get stored token
+  Future<String?> getToken() async {
+    final String? userDataJson = await _secureStorage.read(key: _storageKey);
+    if (userDataJson != null) {
+      final Map<String, dynamic> userData = jsonDecode(userDataJson);
+      return userData['token'];
     }
     return null;
   }

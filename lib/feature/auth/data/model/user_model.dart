@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 import 'dart:developer';
 
@@ -9,6 +8,9 @@ class UserModel {
   String mobile;
   String profileImg;
   bool isBlocked;
+  String password;
+  // String token;
+  DateTime createdAt;
   UserModel({
     required this.id,
     required this.name,
@@ -16,6 +18,9 @@ class UserModel {
     required this.mobile,
     required this.profileImg,
     required this.isBlocked,
+    required this.password,
+    //required this.token,
+    required this.createdAt,
   });
 
   UserModel copyWith({
@@ -25,6 +30,9 @@ class UserModel {
     String? mobile,
     String? profileImg,
     bool? isBlocked,
+    String? password,
+    String? token,
+    DateTime? createdAt,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -33,6 +41,9 @@ class UserModel {
       mobile: mobile ?? this.mobile,
       profileImg: profileImg ?? this.profileImg,
       isBlocked: isBlocked ?? this.isBlocked,
+      password: password ?? this.password,
+      // token: token ?? this.token,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 
@@ -44,6 +55,9 @@ class UserModel {
       'mobile': mobile,
       'profile_img': profileImg,
       'isBlocked': isBlocked,
+      'password': password,
+      // 'token': token,
+      'createdAt': createdAt.toIso8601String(),
     };
   }
 
@@ -61,6 +75,9 @@ class UserModel {
       mobile: map['mobile'] as String,
       profileImg: map['profile_img'] as String,
       isBlocked: map['isBlocked'] as bool,
+      password: map['password'] as String,
+      // token: map['token'] as String,
+      createdAt: DateTime.parse(map['createdAt'] as String),
     );
   }
 
@@ -71,7 +88,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, name: $name, email: $email, mobile: $mobile, profileImg: $profileImg, isBlocked: $isBlocked)';
+    return 'UserModel(id: $id, name: $name, email: $email, mobile: $mobile, profileImg: $profileImg, isBlocked: $isBlocked, password: $password,createdAt: $createdAt)';
   }
 
   @override
@@ -83,7 +100,9 @@ class UserModel {
         other.email == email &&
         other.mobile == mobile &&
         other.profileImg == profileImg &&
-        other.isBlocked == isBlocked;
+        other.isBlocked == isBlocked &&
+        other.password == password &&
+        other.createdAt == createdAt;
   }
 
   @override
@@ -93,6 +112,8 @@ class UserModel {
         email.hashCode ^
         mobile.hashCode ^
         profileImg.hashCode ^
-        isBlocked.hashCode;
+        isBlocked.hashCode ^
+        password.hashCode ^
+        createdAt.hashCode;
   }
 }

@@ -17,6 +17,13 @@ class AuthRepo {
       return null;
     }
   }
+  //   Future<UserModel?> getUser() async {
+  //   return await _authLocalService.getUser();
+  // }
+
+  // Future<String?> getToken() async {
+  //   return await _authLocalService.getToken();
+  // }
 
   Future<UserModel> emailSignIn({
     required String email,
@@ -29,18 +36,23 @@ class AuthRepo {
       );
 
       if (response.statusCode == 200) {
+        log(response.data.toString());
+        final token = response.data['token'] as String;
+        log("Token received: $token");
+
         final Map<String, dynamic> responseData =
             response.data['data'] as Map<String, dynamic>;
         final UserModel userModel = UserModel.fromMap(responseData);
-        _authLocalService.saveUser(userModel);
+
+        await _authLocalService.saveUser(userModel, token);
         return userModel;
       } else {
-        log('Login failed${response.statusCode}');
-        throw Exception();
+        log('Login failed with status code: ${response.statusCode}');
+        throw Exception('Login failed');
       }
     } catch (e) {
-      log(e.toString());
-      throw Exception();
+      log('Error during login: $e');
+      throw Exception('Login failed');
     }
   }
 
@@ -59,18 +71,21 @@ class AuthRepo {
       );
 
       if (response.statusCode == 200) {
+        log(response.data.toString());
+        final token = response.data['token'] as String;
+        log("Token received: $token");
         final Map<String, dynamic> responseData =
             response.data['user'] as Map<String, dynamic>;
         final UserModel userModel = UserModel.fromMap(responseData);
-        _authLocalService.saveUser(userModel);
+        await _authLocalService.saveUser(userModel, token);
         return userModel;
       } else {
-        log('Login failed${response.statusCode}');
-        throw Exception();
+        log('Registration failed with status code ${response.statusCode}');
+        throw Exception('Registration failed');
       }
     } catch (e) {
-      log(e.toString());
-      throw Exception();
+      log('Error during registration: $e');
+      throw Exception('Registration failed');
     }
   }
 
@@ -78,9 +93,13 @@ class AuthRepo {
     try {
       var response = await _authRemoteService.googleAuth();
       if (response?.statusCode == 200) {
-        final Map<String, dynamic> responseData = response?.data['data'];
+        log(response!.data.toString());
+        final token = response.data['token'] as String;
+        log("Token received: $token");
+        final Map<String, dynamic> responseData =
+            response.data['data'] as Map<String, dynamic>;
         final UserModel userModel = UserModel.fromMap(responseData);
-        _authLocalService.saveUser(userModel);
+        await _authLocalService.saveUser(userModel, token);
         return userModel;
       } else {
         log('Login failed${response?.statusCode}');
