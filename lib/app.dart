@@ -4,7 +4,7 @@ import 'package:door_care/feature/auth/data/service/local/auth_local_service.dar
 import 'package:door_care/feature/auth/data/service/remote/auth_remote_service.dart';
 import 'package:door_care/feature/auth/data/repository/auth_repo.dart';
 import 'package:door_care/feature/navigation_menu/bloc/bloc/navigation_bloc.dart';
-import 'package:door_care/feature/service/bloc/bloc/navigation_bloc.dart';
+import 'package:door_care/feature/service/bloc/stepper_navigation_bloc/navigation_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

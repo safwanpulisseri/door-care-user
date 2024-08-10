@@ -3,7 +3,6 @@ import 'package:door_care/feature/home/page/home.dart';
 import 'package:door_care/core/theme/color/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
-
 import '../../../../core/widget/appbar_widget.dart';
 
 class OtpVerificationPage extends StatelessWidget {

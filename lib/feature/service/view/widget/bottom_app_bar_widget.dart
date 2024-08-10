@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../../core/theme/color/app_color.dart';
 
 class BottomAppBarWidget extends StatelessWidget {

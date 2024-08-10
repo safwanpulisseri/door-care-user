@@ -236,7 +236,7 @@ class ServiceDetailsPage extends StatelessWidget {
                   ),
                 ),
               ),
-              child: Text(
+              child: const Text(
                 'Back',
               ),
             ),
@@ -244,7 +244,9 @@ class ServiceDetailsPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomeStepperWidget()),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          HomeStepperWidget(service: service)),
                 );
               },
               style: ButtonStyle(
@@ -257,7 +259,7 @@ class ServiceDetailsPage extends StatelessWidget {
                   ),
                 ),
               ),
-              child: Text('Book Now'),
+              child: const Text('Book Now'),
             ),
           ],
         ),

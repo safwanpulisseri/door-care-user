@@ -7,7 +7,10 @@ class AuthRepo {
   final AuthRemoteService _authRemoteService;
   final AuthLocalService _authLocalService;
 
-  AuthRepo(this._authRemoteService, this._authLocalService);
+  AuthRepo(
+    this._authRemoteService,
+    this._authLocalService,
+  );
 
   Future<UserModel?> getUser() async {
     final UserModel? userModel = await _authLocalService.getUser();
