@@ -16,6 +16,8 @@ final class EnterServiceDetailsEvent extends EnterDetailsEvent {
   final String date;
   final String startTime;
   final String endTime;
+  final num latitude;
+  final num longitude;
 
   const EnterServiceDetailsEvent({
     required this.serviceName,
@@ -26,5 +28,7 @@ final class EnterServiceDetailsEvent extends EnterDetailsEvent {
     required this.date,
     required this.startTime,
     required this.endTime,
+    required this.latitude,
+    required this.longitude,
   });
 }

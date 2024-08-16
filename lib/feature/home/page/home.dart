@@ -6,7 +6,7 @@ import 'package:door_care/feature/home/data/service/remote/fetch_all_services_re
 import 'package:door_care/feature/home/widget/search_widget.dart';
 import 'package:door_care/core/theme/color/app_color.dart';
 import 'package:door_care/core/widget/padding_widget.dart';
-import 'package:door_care/feature/service/view/page/book_service.dart';
+import 'package:door_care/feature/service/view/page/book_service_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';

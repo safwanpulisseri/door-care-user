@@ -11,8 +11,7 @@ class ToastificationWidget {
     ToastificationStyle style = ToastificationStyle.flatColored,
     Duration autoCloseDuration = const Duration(seconds: 5),
     Alignment alignment = Alignment.topRight,
-   
-    
+    Color? textColor,
   }) {
     toastification.show(
       context: context,
@@ -21,16 +20,19 @@ class ToastificationWidget {
       autoCloseDuration: autoCloseDuration,
       title: Text(
         title,
-        style: Theme.of(context).textTheme.labelLarge,
+        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              color: AppColor.secondary,
+            ),
       ),
-      description:Text(
-        title,
-       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-        color: AppColor.toneThree,
-       ),
+      description: RichText(
+        text: TextSpan(
+          text: description,
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: AppColor.secondary,
+              ),
+        ),
       ),
       alignment: alignment,
-    
     );
   }
 }

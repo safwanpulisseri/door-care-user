@@ -4,14 +4,15 @@ import '../../../../core/theme/color/app_color.dart';
 class BottomAppBarWidget extends StatelessWidget {
   final String leftButtonText;
   final String rightButtonText;
-  final Function(int) onNavigate;
+  final VoidCallback onLeftButtonPressed;
+  final VoidCallback onRightButtonPressed;
 
-  const BottomAppBarWidget({
-    super.key,
-    required this.leftButtonText,
-    required this.rightButtonText,
-    required this.onNavigate,
-  });
+  const BottomAppBarWidget(
+      {super.key,
+      required this.leftButtonText,
+      required this.rightButtonText,
+      required this.onLeftButtonPressed,
+      required this.onRightButtonPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class BottomAppBarWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           ElevatedButton(
-            onPressed: () => onNavigate(-1),
+            onPressed: onLeftButtonPressed,
             style: ButtonStyle(
               minimumSize: WidgetStateProperty.all(const Size(200, 50)),
               backgroundColor: WidgetStateProperty.all(AppColor.textfield),
@@ -42,7 +43,7 @@ class BottomAppBarWidget extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            onPressed: () => onNavigate(1),
+            onPressed: onRightButtonPressed,
             style: ButtonStyle(
               minimumSize: WidgetStateProperty.all(const Size(200, 50)),
               backgroundColor: WidgetStateProperty.all(AppColor.primary),

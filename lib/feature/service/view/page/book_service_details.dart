@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../../core/theme/color/app_color.dart';
 import '../../../../core/widget/opacity_container.dart';
 import '../../../home/data/model/fetch_all_service_model.dart';
-import 'stepper_home_widget.dart';
+import 'find_location_book_service.dart';
 
 class ServiceDetailsPage extends StatelessWidget {
   final FetchAllServiceModel service;
@@ -246,7 +246,7 @@ class ServiceDetailsPage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          HomeStepperWidget(service: service)),
+                          FindLocationBookService(service: service)),
                 );
               },
               style: ButtonStyle(

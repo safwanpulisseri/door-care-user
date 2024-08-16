@@ -22,6 +22,8 @@ class BookServiceRepo {
     required String date,
     required String startTime,
     required String endTime,
+    required num latitude,
+    required num longitude,
   }) async {
     try {
       String? token = await _authLocalService.getToken();
@@ -34,9 +36,6 @@ class BookServiceRepo {
         throw Exception('No user found');
       }
       final userId = userModel.id;
-      //Default Location Details(Kochi,Kerala)
-      num latitude = 10.8505;
-      num longitude = 76.2711;
 
       var response = await _bookServiceRemoteService.bookService(
         token: token,

@@ -20,6 +20,8 @@ class EnterDetailsBloc extends Bloc<EnterDetailsEvent, EnterDetailsState> {
           date: event.date,
           startTime: event.startTime,
           endTime: event.endTime,
+          latitude: event.latitude,
+          longitude: event.longitude,
         );
         if (response.statusCode == 200) {
           emit(EnterDetailsSuccessState());

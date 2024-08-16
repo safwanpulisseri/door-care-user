@@ -4,9 +4,11 @@ import 'package:door_care/feature/auth/data/service/local/auth_local_service.dar
 import 'package:door_care/feature/auth/data/service/remote/auth_remote_service.dart';
 import 'package:door_care/feature/auth/data/repository/auth_repo.dart';
 import 'package:door_care/feature/navigation_menu/bloc/bloc/navigation_bloc.dart';
-import 'package:door_care/feature/service/bloc/stepper_navigation_bloc/navigation_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'feature/service/bloc/enter_details_bloc/enter_details_bloc.dart';
+import 'feature/service/data/repository/book_service_repo.dart';
+import 'feature/service/data/service/remote/book_service_remote_service.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -21,6 +23,12 @@ class MyApp extends StatelessWidget {
             AuthLocalService(),
           ),
         ),
+        RepositoryProvider(
+          create: (context) => BookServiceRepo(
+            BookServiceRemoteService(),
+            AuthLocalService(),
+          ),
+        )
       ],
       child: MultiBlocProvider(
         providers: [
@@ -32,7 +40,8 @@ class MyApp extends StatelessWidget {
             create: (context) => NavigationBloc(),
           ),
           BlocProvider(
-            create: (context) => StepperNavigationBloc(),
+            create: (context) =>
+                EnterDetailsBloc(context.read<BookServiceRepo>()),
           )
         ],
         child: const MyAppView(),
