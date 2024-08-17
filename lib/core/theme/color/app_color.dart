@@ -17,4 +17,5 @@ final class AppColor {
   static const Color toneEight = Color(0xFF2A9721);
   static const Color toneNine = Color(0xFF3FD9D7);
   static const Color toneTen = Color(0xFFFFBC99);
+  static const Color toneEleven = Colors.transparent;
 }

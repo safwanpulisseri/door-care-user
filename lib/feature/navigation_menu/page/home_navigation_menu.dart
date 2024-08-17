@@ -1,5 +1,5 @@
 import 'package:door_care/feature/bookings/view/page/bookings.dart';
-import 'package:door_care/feature/home/page/home.dart';
+import 'package:door_care/feature/home/view/page/home.dart';
 import 'package:door_care/core/theme/color/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

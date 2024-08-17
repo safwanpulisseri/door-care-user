@@ -1,23 +1,29 @@
 import 'package:door_care/core/util/jason_asset.dart';
+import 'package:door_care/feature/auth/bloc/auth_bloc/auth_bloc.dart';
 import 'package:door_care/feature/drawer/home_drawer.dart';
 import 'package:door_care/feature/home/bloc/bloc/fetch_all_added_services_bloc.dart';
 import 'package:door_care/feature/home/data/repository/fetch_all_services_repo.dart';
 import 'package:door_care/feature/home/data/service/remote/fetch_all_services_remote_service.dart';
-import 'package:door_care/feature/home/widget/search_widget.dart';
+import 'package:door_care/feature/home/view/widget/search_widget.dart';
 import 'package:door_care/core/theme/color/app_color.dart';
 import 'package:door_care/core/widget/padding_widget.dart';
 import 'package:door_care/feature/service/view/page/book_service_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
-import '../../../core/widget/opacity_container.dart';
+import '../../../../core/widget/opacity_container.dart';
 import '../widget/join_our_team.dart';
 import '../widget/review_card.dart';
 import '../widget/service_card.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -37,10 +43,17 @@ class HomePage extends StatelessWidget {
               },
             ),
           ),
-          title: const Text(
-            'HELLO SAFWAN 👋',
-            style: TextStyle(fontSize: 16, color: Colors.grey),
-          ),
+          title: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+            if (state is AuthSuccessState) {
+              final userName = state.userModel.name;
+              return Text(
+                'HELLO ${userName.toUpperCase()} 👋',
+                style: const TextStyle(fontSize: 16, color: Colors.grey),
+              );
+            } else {
+              return const Text('HELLO USER 👋');
+            }
+          }),
           backgroundColor: AppColor.background,
         ),
         drawer: const CustomDrawer(),

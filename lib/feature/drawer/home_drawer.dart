@@ -5,7 +5,6 @@ import 'package:door_care/core/util/png_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
-
 import '../../core/widget/toastifiaction_widget.dart';
 import '../auth/view/page/sign_in_page.dart';
 
@@ -18,48 +17,75 @@ class CustomDrawer extends StatelessWidget {
       backgroundColor: AppColor.primary,
       child: Column(
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (ctx) => UserDetailsPage()),
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(top: 70, left: 10),
-              child: Row(
-                children: [
-                  const CircleAvatar(
-                    radius: 30,
-                    backgroundImage: AssetImage(AppPngPath.homeCleanOne),
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Safwan Pulisseri',
-                        style:
-                            Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                  color: AppColor.background,
-                                  fontSize: 17,
+          BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthSuccessState) {
+                final user = state.userModel;
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (ctx) => UserDetailsPage()),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 70, left: 10),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor: AppColor.toneEleven,
+                          backgroundImage: user.profileImg.isNotEmpty
+                              ? NetworkImage(
+                                  user.profileImg,
+                                )
+                              : const AssetImage(
+                                  AppPngPath.personImage,
                                 ),
-                      ),
-                      Text(
-                        'safwanpulisseri123@gmail.com',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColor.background,
-                              fontWeight: FontWeight.w300,
-                              fontSize: 13,
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              user.name,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineLarge
+                                  ?.copyWith(
+                                    color: AppColor.background,
+                                    fontSize: 17,
+                                  ),
                             ),
-                      ),
-                    ],
+                            Text(
+                              user.email,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: AppColor.background,
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 13,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
+                );
+              } else {
+                return Text(
+                  'Failed Fetch User\'s DEtails',
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                        color: AppColor.background,
+                        fontSize: 17,
+                      ),
+                );
+              }
+            },
           ),
           Expanded(
             child: ListView(

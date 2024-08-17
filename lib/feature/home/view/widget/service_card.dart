@@ -1,6 +1,6 @@
 // service_card.dart
 import 'package:flutter/material.dart';
-import '../../../core/theme/color/app_color.dart';
+import '../../../../core/theme/color/app_color.dart';
 
 class ServiceCard extends StatelessWidget {
   final String image;
