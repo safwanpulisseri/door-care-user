@@ -9,7 +9,7 @@ class BookingPage extends StatefulWidget {
   const BookingPage({super.key});
 
   @override
-  _BookingPageState createState() => _BookingPageState();
+  createState() => _BookingPageState();
 }
 
 class _BookingPageState extends State<BookingPage>
@@ -38,21 +38,25 @@ class _BookingPageState extends State<BookingPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leadingWidth: double.infinity,
         automaticallyImplyLeading: false,
-        leading: const Padding(
-          padding: EdgeInsets.only(left: 20),
-          child: Row(
-            children: [
-              OpacityContainer(),
-            ],
-          ),
-        ),
-        title: Text(
-          'Bookings',
-          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                color: AppColor.secondary,
-                fontSize: 30,
-              ),
+        leading: Row(
+          children: [
+            const SizedBox(
+              width: 10,
+            ),
+            const OpacityContainer(),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              'Bookings',
+              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                    color: AppColor.secondary,
+                    fontSize: 28,
+                  ),
+            ),
+          ],
         ),
         backgroundColor: AppColor.background,
         bottom: PreferredSize(

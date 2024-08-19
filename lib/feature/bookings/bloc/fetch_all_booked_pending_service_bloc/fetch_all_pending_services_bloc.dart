@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../data/model/fetch_all_booked_service_model.dart';
-import '../../data/repository/fetch_all_booked_service_repo.dart';
+import '../../data/repository/fetch_all_booked_pending_service_repo.dart';
 part 'fetch_all_pending_services_event.dart';
 part 'fetch_all_pending_services_state.dart';
 

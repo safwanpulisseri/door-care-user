@@ -1,18 +1,20 @@
-import 'dart:developer';
-import 'package:door_care/core/widget/padding_booking.dart';
-import 'package:door_care/core/widget/padding_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:intl/intl.dart';
-import 'package:pinput/pinput.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
+import 'package:toastification/toastification.dart';
 import '../../../../core/theme/color/app_color.dart';
-import '../../../../core/util/png_asset.dart';
+import '../../../../core/util/jason_asset.dart';
+import '../../../../core/widget/toastifiaction_widget.dart';
 import '../../../auth/data/service/local/auth_local_service.dart';
-import '../../bloc/bloc/fetch_all_pending_services_bloc.dart';
-import '../../data/repository/fetch_all_booked_service_repo.dart';
-import '../../data/service/remote/fetch_all_booked_service_details.dart';
+import '../../../auth/view/widget/loading_dialog.dart';
+import '../../bloc/cancel_a_pending_service_bloc/cancel_a_booked_pending_service_bloc.dart';
+import '../../bloc/fetch_all_booked_pending_service_bloc/fetch_all_pending_services_bloc.dart';
+import '../../data/repository/cancel_a_booked_pending_service_repo.dart';
+import '../../data/repository/fetch_all_booked_pending_service_repo.dart';
+import '../../data/service/remote/cancel_a_booked_pending_service.dart';
+import '../../data/service/remote/fetch_all_booked_pending_service_details.dart';
+import '../widgets/card_widget.dart';
 
 class TabScreenOne extends StatefulWidget {
   const TabScreenOne({super.key});
@@ -22,314 +24,122 @@ class TabScreenOne extends StatefulWidget {
 }
 
 class _TabScreenOneState extends State<TabScreenOne> {
-  Future<String> _getLocationName(double latitude, double longitude) async {
-    try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-        latitude,
-        longitude,
-      );
-      if (placemarks.isNotEmpty) {
-        final Placemark placemark = placemarks.first;
-        return '${placemark.locality}, ${placemark.administrativeArea}';
-      } else {
-        return 'Location not found';
-      }
-    } catch (e) {
-      return 'Failed to get location name: $e';
-    }
-  }
-
-  Widget _buildPendingContent() {
+  @override
+  Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => FetchAllPendingServicesBloc(
         FetchAllBookedServiceRepo(
             FetchAllBookedServiceDetails(), AuthLocalService()),
       )..add(FetchAllBookedPendingServicesEvent()),
       child: Scaffold(
-        body: PaddingWidgetBooking(
-          child: BlocBuilder<FetchAllPendingServicesBloc,
-              FetchAllPendingServicesState>(builder: (context, state) {
-            if (state is FetchAllPendingServicesLoadingState) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is FetchAllPendingServicesSuccessState) {
-              final services = state.fetchAllBookedServiceModel;
+        body: BlocBuilder<FetchAllPendingServicesBloc,
+            FetchAllPendingServicesState>(builder: (context, state) {
+          if (state is FetchAllPendingServicesLoadingState) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is FetchAllPendingServicesSuccessState) {
+            final services = state.fetchAllBookedServiceModel;
+            if (services.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const FaIcon(
+                      FontAwesomeIcons.ban,
+                      color: AppColor.toneThree,
+                      size: 40,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      'No Booked Services Available',
+                      style:
+                          TextStyle(color: AppColor.secondary.withOpacity(0.8)),
+                    ),
+                  ],
+                ),
+              );
+            }
 
-              return ListView.builder(
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListView.builder(
                 itemCount: services.length,
                 itemBuilder: (context, index) {
                   final service = services[index];
-                  return Card(
-                    color: AppColor.background,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: PaddingWidget(
-                      // padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 35,
-                                backgroundImage: service.serviceImg.isNotEmpty
-                                    ? NetworkImage(service.serviceImg)
-                                    : const AssetImage(AppPngPath.homeCleanTwo),
-                                // onBackgroundImageError:
-                                //     (exception, stackTrace) {
-                                //   // Optionally handle image loading errors here
-                                // },
-                              ),
-                              const SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    service.serviceName,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Booking ID:${service.id}',
-                                    style: const TextStyle(
-                                      color: AppColor.toneThree,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const Divider(),
-                          const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                'Work Status',
-                                style: TextStyle(
-                                  color: AppColor.toneThree,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Chip(
-                                side: BorderSide.none,
-                                label: Text(
-                                  service.status,
-                                  style:
-                                      const TextStyle(color: AppColor.toneSix),
-                                ),
-                                backgroundColor:
-                                    AppColor.toneSix.withOpacity(0.2),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                'Payment Status',
-                                style: TextStyle(
-                                  color: AppColor.toneThree,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Chip(
-                                side: BorderSide.none,
-                                label: const Text(
-                                  'Pending',
-                                  style: TextStyle(color: AppColor.toneSix),
-                                ),
-                                backgroundColor:
-                                    AppColor.toneSix.withOpacity(0.2),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color:
-                                          AppColor.toneThree.withOpacity(0.7),
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SvgPicture.asset(
-                                        "assets/svg/booking_one.svg"),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                DateFormat('dd-MM-yyyy')
-                                    .format(service.createdAt),
-                                style: const TextStyle(
-                                  color: AppColor.secondary,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          FutureBuilder<String>(
-                            future: _getLocationName(
-                                service.latitude, service.longitude),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor: Colors.transparent,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            color: AppColor.toneThree
-                                                .withOpacity(0.7),
-                                            width: 1.0,
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: SvgPicture.asset(
-                                              "assets/svg/booking_two.svg"),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    const Text(
-                                      'Fetching location...',
-                                      style: TextStyle(
-                                        color: AppColor.secondary,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              } else if (snapshot.hasError) {
-                                return Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor: Colors.transparent,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            color: AppColor.toneThree
-                                                .withOpacity(0.7),
-                                            width: 1.0,
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: SvgPicture.asset(
-                                              "assets/svg/booking_two.svg"),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(
-                                      'Error fetching location',
-                                      style: const TextStyle(
-                                        color: AppColor.secondary,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              } else {
-                                return Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor: Colors.transparent,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            color: AppColor.toneThree
-                                                .withOpacity(0.7),
-                                            width: 1.0,
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: SvgPicture.asset(
-                                              "assets/svg/booking_two.svg"),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Expanded(
-                                      child: Text(
-                                        snapshot.data ?? 'Unknown location',
-                                        style: const TextStyle(
-                                          color: AppColor.secondary,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              }
-                            },
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          )
-                          // const Divider(),
-                          // Align(
-                          //   alignment: Alignment.centerRight,
-                          //   child: ElevatedButton(
-                          //     onPressed: () {},
-                          //     style: ElevatedButton.styleFrom(
-                          //       backgroundColor:
-                          //           AppColor.toneSeven.withOpacity(0.8),
-                          //       shape: RoundedRectangleBorder(
-                          //         borderRadius: BorderRadius.circular(8),
-                          //       ),
-                          //     ),
-                          //     child: const Text(
-                          //       'Cancel',
-                          //       style: TextStyle(color: AppColor.background),
-                          //     ),
-                          //   ),
-                          // ),
-                        ],
+                  return BlocProvider(
+                    create: (context) => CancelABookedPendingServiceBloc(
+                      CancelABookedPendingServiceRepo(
+                        CancelABookedPendingService(),
+                        AuthLocalService(),
                       ),
+                    ),
+                    child: BlocListener<CancelABookedPendingServiceBloc,
+                        CancelABookedPendingServiceState>(
+                      listener: (context, cancelState) {
+                        if (cancelState
+                            is CancelABookedPendingServiceLoadingState) {
+                          LoadingDialog.show(context);
+                        } else if (cancelState
+                            is CancelABookedPendingServiceSuccessState) {
+                          Navigator.pop(context);
+                          ToastificationWidget.show(
+                            context: context,
+                            type: ToastificationType.success,
+                            title: 'Success',
+                            description:
+                                'Service booking cancelled successfully',
+                          );
+                          // Trigger a reload of the pending services
+                          context
+                              .read<FetchAllPendingServicesBloc>()
+                              .add(FetchAllBookedPendingServicesEvent());
+                        } else if (cancelState
+                            is CancelABookedPendingServiceFailState) {
+                          Navigator.pop(context);
+                          ToastificationWidget.show(
+                            context: context,
+                            type: ToastificationType.error,
+                            title: 'Error',
+                            description: 'Failed to cancel service booking',
+                          );
+                        }
+                      },
+                      child: CardWidget(service: service),
                     ),
                   );
                 },
-              );
-            } else if (state is FetchAllPendingServicesFailState) {
-              return const Center(child: Text('Failed to fetch services.'));
-            } else {
-              return const Center(child: Text('No data available.'));
-            }
-          }),
-        ),
+              ),
+            );
+          } else if (state is FetchAllPendingServicesFailState) {
+            return Center(
+              child: Column(
+                children: [
+                  Lottie.asset(AppJasonPath.failedToFetch,
+                      height: 150, width: 150),
+                  const Text(
+                    'Failed to Fetch Services',
+                    style: TextStyle(color: AppColor.toneSeven),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return Center(
+              child: Column(
+                children: [
+                  Lottie.asset(AppJasonPath.failedToFetch,
+                      height: 150, width: 150),
+                  const Text(
+                    'No Services Available',
+                    style: TextStyle(color: AppColor.toneSeven),
+                  ),
+                ],
+              ),
+            );
+          }
+        }),
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildPendingContent(),
     );
   }
 }
