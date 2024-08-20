@@ -1,14 +1,11 @@
 import 'package:door_care/core/theme/color/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:open_street_map_search_and_pick/open_street_map_search_and_pick.dart';
 import 'package:toastification/toastification.dart';
 import '../../../../core/widget/toastifiaction_widget.dart';
 import '../../../home/data/model/fetch_all_service_model.dart';
-import '../../../navigation_menu/page/home_navigation_menu.dart';
-import '../widget/bottom_app_bar_widget.dart';
 import '../widget/circle_avathar_widget.dart';
 import 'enter_details_book_service.dart';
 
@@ -115,11 +112,12 @@ class _FindLocationBookServiceState extends State<FindLocationBookService> {
                   : _errorMessage != null
                       ? Center(
                           child: Text(
-                          _errorMessage!,
-                          style: const TextStyle(
-                            color: AppColor.secondary,
+                            _errorMessage!,
+                            style: const TextStyle(
+                              color: AppColor.secondary,
+                            ),
                           ),
-                        ))
+                        )
                       : OpenStreetMapSearchAndPick(
                           buttonWidth: 130,
                           zoomInIcon: Icons.zoom_in_sharp,
@@ -167,33 +165,6 @@ class _FindLocationBookServiceState extends State<FindLocationBookService> {
           ],
         ),
       ),
-      // bottomNavigationBar: BottomAppBarWidget(
-      //   leftButtonText: 'Cancel',
-      //   rightButtonText: 'Next',
-      //   onLeftButtonPressed: () {
-      //     Navigator.pushAndRemoveUntil(
-      //       context,
-      //       MaterialPageRoute(builder: (_) => HomeNavigationMenu()),
-      //       (route) => false,
-      //     );
-      //   },
-      //   onRightButtonPressed: () {
-      //     if (_selectedLocation != null) {
-      //       Navigator.push(
-      //         context,
-      //         MaterialPageRoute(
-      //           builder: (context) => EnterDetailsBookService(
-      //             service: widget.service,
-      //             latitude: _selectedLocation!['lat']!,
-      //             longitude: _selectedLocation!['long']!,
-      //           ),
-      //         ),
-      //       );
-      //     } else {
-      //       _showError('Please pick a location before proceeding.');
-      //     }
-      //   },
-      // ),
     );
   }
 }

@@ -3,7 +3,6 @@ import 'package:door_care/feature/navigation_menu/page/home_navigation_menu.dart
 import 'package:door_care/feature/service/bloc/enter_details_bloc/enter_details_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:toastification/toastification.dart';
@@ -12,6 +11,9 @@ import '../../../auth/view/widget/loading_dialog.dart';
 import '../../../home/data/model/fetch_all_service_model.dart';
 import '../widget/bottom_app_bar_widget.dart';
 import '../widget/circle_avathar_widget.dart';
+import '../widget/comment_picker_widget.dart';
+import '../widget/date_picker_widget.dart';
+import '../widget/time_picker_widget.dart';
 import 'comepleted_book_service.dart';
 
 class EnterDetailsBookService extends StatefulWidget {
@@ -37,56 +39,22 @@ class _EnterDetailsBookServiceState extends State<EnterDetailsBookService> {
   TimeOfDay? selectedEndTime;
   TextEditingController commentsController = TextEditingController();
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: const ColorScheme.light(primary: AppColor.toneTen),
-            textTheme: const TextTheme().copyWith(
-              bodyLarge: const TextStyle(color: AppColor.secondary),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
+  void _updateDate(DateTime? date) {
+    setState(() {
+      selectedDate = date;
+    });
   }
 
-  Future<void> _selectTime(BuildContext context, bool isStartTime) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: const ColorScheme.light(primary: AppColor.toneOne),
-            textTheme: const TextTheme().copyWith(
-              bodyLarge: const TextStyle(color: AppColor.secondary),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-    if (picked != null) {
-      setState(() {
-        if (isStartTime) {
-          selectedStartTime = picked;
-        } else {
-          selectedEndTime = picked;
-        }
-      });
-    }
+  void _updateStartTime(TimeOfDay? time) {
+    setState(() {
+      selectedStartTime = time;
+    });
+  }
+
+  void _updateEndTime(TimeOfDay? time) {
+    setState(() {
+      selectedEndTime = time;
+    });
   }
 
   @override
@@ -108,8 +76,6 @@ class _EnterDetailsBookServiceState extends State<EnterDetailsBookService> {
             type: ToastificationType.success,
             title: 'Success',
             description: 'Successfully Booked a Service!',
-            // backgroundColor: AppColor.toneEight,
-            // textColor: AppColor.background,
           );
         } else if (state is EnterDetailsFailState) {
           Navigator.pushAndRemoveUntil(
@@ -125,8 +91,6 @@ class _EnterDetailsBookServiceState extends State<EnterDetailsBookService> {
             type: ToastificationType.error,
             title: 'Error',
             description: 'Failed to book a service. Please try again.',
-            // backgroundColor: AppColor.toneSeven,
-            // textColor: AppColor.background,
           );
         }
       },
@@ -162,201 +126,19 @@ class _EnterDetailsBookServiceState extends State<EnterDetailsBookService> {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      Text(widget.latitude.toString()),
-                      Text(widget.longitude.toString()),
-                      GestureDetector(
-                        onTap: () => _selectDate(context),
-                        child: Container(
-                          height: 100,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: AppColor.toneTen,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Row(
-                                children: [
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Icon(IconlyLight.calendar),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text('Date')
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 45,
-                                  ),
-                                  Text(
-                                    selectedDate != null
-                                        ? DateFormat.yMMMd()
-                                            .format(selectedDate!)
-                                        : 'Select your Date',
-                                    style: TextStyle(
-                                      color:
-                                          AppColor.secondary.withOpacity(0.5),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
+                      DatePickerWidget(
+                        onDateSelected: _updateDate, // Pass the callback
                       ),
-                      const SizedBox(
-                        height: 20,
+                      const SizedBox(height: 20),
+                      TimePickerWidget(
+                        onStartTimeSelected: _updateStartTime,
+                        onEndTimeSelected: _updateEndTime,
                       ),
-                      GestureDetector(
-                        onTap: () => _selectTime(context, true),
-                        child: Container(
-                          height: 100,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: AppColor.toneOne,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Row(
-                                children: [
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Icon(IconlyLight.timeSquare),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text('Time')
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 45,
-                                  ),
-                                  Text(
-                                    selectedStartTime != null
-                                        ? selectedStartTime!.format(context)
-                                        : 'Select your Start Time',
-                                    style: TextStyle(
-                                      color:
-                                          AppColor.secondary.withOpacity(0.5),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
+                      const SizedBox(height: 20),
+                      CommentPickerWidget(
+                        commentsController: commentsController,
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      GestureDetector(
-                        onTap: () => _selectTime(context, false),
-                        child: Container(
-                          height: 100,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: AppColor.toneOne,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Row(
-                                children: [
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Icon(IconlyLight.timeSquare),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text('Time')
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 45,
-                                  ),
-                                  Text(
-                                    selectedEndTime != null
-                                        ? selectedEndTime!.format(context)
-                                        : 'Select your End Time',
-                                    style: TextStyle(
-                                      color:
-                                          AppColor.secondary.withOpacity(0.5),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        height: 100,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: AppColor.toneNine,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              const Row(
-                                children: [
-                                  Icon(IconlyLight.message),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text('COMMENTS'),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 30),
-                                child: TextField(
-                                  controller: commentsController,
-                                  decoration: InputDecoration(
-                                    hintText: 'Write your Message to Worker',
-                                    hintStyle: TextStyle(
-                                      fontSize: 14,
-                                      color:
-                                          AppColor.secondary.withOpacity(0.5),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
@@ -379,7 +161,6 @@ class _EnterDetailsBookServiceState extends State<EnterDetailsBookService> {
                   DateFormat('yyyy-MM-dd').format(selectedDate!);
               final formattedStartTime = selectedStartTime!.format(context);
               final formattedEndTime = selectedEndTime!.format(context);
-
               // Pass the data to the BLoC event
               context.read<EnterDetailsBloc>().add(
                     EnterServiceDetailsEvent(
@@ -396,7 +177,6 @@ class _EnterDetailsBookServiceState extends State<EnterDetailsBookService> {
                     ),
                   );
             } else {
-              // Show an error message if any required fields are missing
               ToastificationWidget.show(
                 context: context,
                 type: ToastificationType.error,
