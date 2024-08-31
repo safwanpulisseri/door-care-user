@@ -7,7 +7,8 @@ import '../../../../core/theme/color/app_color.dart';
 class TabScreenThree extends StatelessWidget {
   const TabScreenThree({super.key});
 
-  Widget _buildPendingContent() {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: PaddingWidgetBooking(
         child: Card(
@@ -16,7 +17,6 @@ class TabScreenThree extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           child: PaddingWidget(
-            // padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -163,7 +163,7 @@ class TabScreenThree extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      'Total : ₹465.00',
+                      'Total : ₹465.00',
                       style: TextStyle(
                         color: AppColor.secondary,
                         fontSize: 16,
@@ -190,13 +190,6 @@ class TabScreenThree extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildPendingContent(),
     );
   }
 }

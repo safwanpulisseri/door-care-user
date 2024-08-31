@@ -3,6 +3,7 @@ import 'package:door_care/feature/home/view/page/home.dart';
 import 'package:door_care/core/theme/color/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../drawer/home_drawer.dart';
 import '../bloc/bloc/navigation_bloc.dart';
 
 class HomeNavigationMenu extends StatelessWidget {
@@ -12,6 +13,8 @@ class HomeNavigationMenu extends StatelessWidget {
     const HomePage(),
     const BookingPage(),
   ];
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +33,8 @@ class HomeNavigationMenu extends StatelessWidget {
       builder: (context, state) {
         int selectedIndex = state is NavigationPageState ? state.pageIndex : 0;
         return Scaffold(
+          key: _scaffoldKey,
+          drawer: const CustomDrawer(),
           body: _pages[selectedIndex],
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: selectedIndex,

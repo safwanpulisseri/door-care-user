@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import '../../../auth/data/service/local/auth_local_service.dart';
-import '../model/fetch_all_booked_service_model.dart';
 import '../service/remote/cancel_a_booked_pending_service.dart';
 
 class CancelABookedPendingServiceRepo {

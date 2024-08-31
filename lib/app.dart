@@ -6,6 +6,9 @@ import 'package:door_care/feature/auth/data/repository/auth_repo.dart';
 import 'package:door_care/feature/navigation_menu/bloc/bloc/navigation_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'feature/manageService/chat/bloc/bloc/create_conversation_bloc.dart';
+import 'feature/manageService/chat/data/repository/createConversationRepo.dart';
+import 'feature/manageService/chat/data/service/remote/createConversationRemote.dart';
 import 'feature/service/bloc/enter_details_bloc/enter_details_bloc.dart';
 import 'feature/service/data/repository/book_service_repo.dart';
 import 'feature/service/data/service/remote/book_service_remote_service.dart';
@@ -28,7 +31,13 @@ class MyApp extends StatelessWidget {
             BookServiceRemoteService(),
             AuthLocalService(),
           ),
-        )
+        ),
+        RepositoryProvider(
+          create: (context) => Createconversationrepo(
+            Createconversation(),
+            AuthLocalService(),
+          ),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -42,7 +51,11 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) =>
                 EnterDetailsBloc(context.read<BookServiceRepo>()),
-          )
+          ),
+          BlocProvider(
+            create: (context) =>
+                CreateConversationBloc(context.read<Createconversationrepo>()),
+          ),
         ],
         child: const MyAppView(),
       ),

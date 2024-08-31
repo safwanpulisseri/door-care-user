@@ -1,19 +1,20 @@
 import 'dart:developer';
-import 'package:door_care/feature/auth/data/model/user_model.dart';
+import '../../../auth/data/model/user_model.dart';
 import '../../../auth/data/service/local/auth_local_service.dart';
 import '../model/fetch_all_booked_service_model.dart';
-import '../service/remote/fetch_all_booked_pending_service_details.dart';
+import '../service/remote/fetch_all_committed_service_remote.dart';
 
-class FetchAllBookedServiceRepo {
-  final FetchAllBookedServiceDetails _fetchAllBookedServiceDetails;
+class FetchAllCommitedServiceRepo {
+  final FetchAllCommitedServiceRemote _fetchAllCommitedServiceRemote;
   final AuthLocalService _authLocalService;
 
-  FetchAllBookedServiceRepo(
-    this._fetchAllBookedServiceDetails,
+  FetchAllCommitedServiceRepo(
+    this._fetchAllCommitedServiceRemote,
     this._authLocalService,
   );
 
-  Future<List<FetchAllBookedServiceModel>> fetchServicesDetails() async {
+  Future<List<FetchAllBookedServiceModel>>
+      fetchAllCommitedServiceDetails() async {
     try {
       String? token = await _authLocalService.getToken();
       if (token == null) {
@@ -24,7 +25,8 @@ class FetchAllBookedServiceRepo {
         throw Exception('No UserModel Found');
       }
       String userId = userModel.id;
-      var response = await _fetchAllBookedServiceDetails.fetchAllServiceDetails(
+      var response =
+          await _fetchAllCommitedServiceRemote.fetchCommitedServiceDetails(
         token: token,
         userId: userId,
       );
@@ -40,7 +42,7 @@ class FetchAllBookedServiceRepo {
 
         return fetchAllServiceModel;
       } else {
-        log('FetchAllBookedServiceDetails failed${response.statusCode}');
+        log('FetchAllCommitedServiceRepo failed${response.statusCode}');
         throw Exception();
       }
     } catch (e) {

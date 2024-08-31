@@ -33,112 +33,115 @@ class _TabScreenOneState extends State<TabScreenOne> {
       )..add(FetchAllBookedPendingServicesEvent()),
       child: Scaffold(
         body: BlocBuilder<FetchAllPendingServicesBloc,
-            FetchAllPendingServicesState>(builder: (context, state) {
-          if (state is FetchAllPendingServicesLoadingState) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is FetchAllPendingServicesSuccessState) {
-            final services = state.fetchAllBookedServiceModel;
-            if (services.isEmpty) {
+            FetchAllPendingServicesState>(
+          builder: (context, state) {
+            if (state is FetchAllPendingServicesLoadingState) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is FetchAllPendingServicesSuccessState) {
+              final services = state.fetchAllBookedServiceModel;
+              if (services.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const FaIcon(
+                        FontAwesomeIcons.ban,
+                        color: AppColor.toneThree,
+                        size: 40,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        'No Booked Services Available',
+                        style: TextStyle(
+                            color: AppColor.secondary.withOpacity(0.8)),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView.builder(
+                  itemCount: services.length,
+                  itemBuilder: (context, index) {
+                    final service = services[index];
+                    return BlocProvider(
+                      create: (context) => CancelABookedPendingServiceBloc(
+                        CancelABookedPendingServiceRepo(
+                          CancelABookedPendingService(),
+                          AuthLocalService(),
+                        ),
+                      ),
+                      child: BlocListener<CancelABookedPendingServiceBloc,
+                          CancelABookedPendingServiceState>(
+                        listener: (context, cancelState) {
+                          if (cancelState
+                              is CancelABookedPendingServiceLoadingState) {
+                            LoadingDialog.show(context);
+                          } else if (cancelState
+                              is CancelABookedPendingServiceSuccessState) {
+                            Navigator.pop(context);
+                            ToastificationWidget.show(
+                              context: context,
+                              type: ToastificationType.success,
+                              title: 'Success',
+                              description:
+                                  'Service booking cancelled successfully',
+                            );
+                            // Trigger a reload of the pending services
+                            context
+                                .read<FetchAllPendingServicesBloc>()
+                                .add(FetchAllBookedPendingServicesEvent());
+                          } else if (cancelState
+                              is CancelABookedPendingServiceFailState) {
+                            Navigator.pop(context);
+                            ToastificationWidget.show(
+                              context: context,
+                              type: ToastificationType.error,
+                              title: 'Error',
+                              description: 'Failed to cancel service booking',
+                            );
+                          }
+                        },
+                        child: CardWidget(service: service),
+                      ),
+                    );
+                  },
+                ),
+              );
+            } else if (state is FetchAllPendingServicesFailState) {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const FaIcon(
-                      FontAwesomeIcons.ban,
-                      color: AppColor.toneThree,
-                      size: 40,
+                    Lottie.asset(AppJasonPath.failedToFetch,
+                        height: 150, width: 150),
+                    const Text(
+                      'Failed to Fetch Services',
+                      style: TextStyle(color: AppColor.toneSeven),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      'No Booked Services Available',
-                      style:
-                          TextStyle(color: AppColor.secondary.withOpacity(0.8)),
+                  ],
+                ),
+              );
+            } else {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Lottie.asset(AppJasonPath.failedToFetch,
+                        height: 150, width: 150),
+                    const Text(
+                      'No Services Available',
+                      style: TextStyle(color: AppColor.toneSeven),
                     ),
                   ],
                 ),
               );
             }
-
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView.builder(
-                itemCount: services.length,
-                itemBuilder: (context, index) {
-                  final service = services[index];
-                  return BlocProvider(
-                    create: (context) => CancelABookedPendingServiceBloc(
-                      CancelABookedPendingServiceRepo(
-                        CancelABookedPendingService(),
-                        AuthLocalService(),
-                      ),
-                    ),
-                    child: BlocListener<CancelABookedPendingServiceBloc,
-                        CancelABookedPendingServiceState>(
-                      listener: (context, cancelState) {
-                        if (cancelState
-                            is CancelABookedPendingServiceLoadingState) {
-                          LoadingDialog.show(context);
-                        } else if (cancelState
-                            is CancelABookedPendingServiceSuccessState) {
-                          Navigator.pop(context);
-                          ToastificationWidget.show(
-                            context: context,
-                            type: ToastificationType.success,
-                            title: 'Success',
-                            description:
-                                'Service booking cancelled successfully',
-                          );
-                          // Trigger a reload of the pending services
-                          context
-                              .read<FetchAllPendingServicesBloc>()
-                              .add(FetchAllBookedPendingServicesEvent());
-                        } else if (cancelState
-                            is CancelABookedPendingServiceFailState) {
-                          Navigator.pop(context);
-                          ToastificationWidget.show(
-                            context: context,
-                            type: ToastificationType.error,
-                            title: 'Error',
-                            description: 'Failed to cancel service booking',
-                          );
-                        }
-                      },
-                      child: CardWidget(service: service),
-                    ),
-                  );
-                },
-              ),
-            );
-          } else if (state is FetchAllPendingServicesFailState) {
-            return Center(
-              child: Column(
-                children: [
-                  Lottie.asset(AppJasonPath.failedToFetch,
-                      height: 150, width: 150),
-                  const Text(
-                    'Failed to Fetch Services',
-                    style: TextStyle(color: AppColor.toneSeven),
-                  ),
-                ],
-              ),
-            );
-          } else {
-            return Center(
-              child: Column(
-                children: [
-                  Lottie.asset(AppJasonPath.failedToFetch,
-                      height: 150, width: 150),
-                  const Text(
-                    'No Services Available',
-                    style: TextStyle(color: AppColor.toneSeven),
-                  ),
-                ],
-              ),
-            );
-          }
-        }),
+          },
+        ),
       ),
     );
   }

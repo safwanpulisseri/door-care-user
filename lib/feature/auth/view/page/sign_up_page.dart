@@ -7,7 +7,9 @@ import 'package:door_care/core/widget/padding_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:toastification/toastification.dart';
 import '../../../../core/theme/color/app_color.dart';
+import '../../../../core/widget/toastifiaction_widget.dart';
 import '../../../navigation_menu/page/home_navigation_menu.dart';
 import '../widget/auth_button.dart';
 import '../widget/auth_text_formfield.dart';
@@ -52,9 +54,21 @@ class _SignUpPageState extends State<SignUpPage> {
             MaterialPageRoute(builder: (_) => HomeNavigationMenu()),
             (route) => false,
           );
+          ToastificationWidget.show(
+            context: context,
+            type: ToastificationType.success,
+            title: 'Success',
+            description: 'Successfully signed up!',
+          );
         }
         if (state is AuthFailState) {
           Navigator.pop(context);
+          ToastificationWidget.show(
+            context: context,
+            type: ToastificationType.error,
+            title: 'Error',
+            description: 'Failed to sign up. Please try again.',
+          );
         }
       },
       child: Scaffold(

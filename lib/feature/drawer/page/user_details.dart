@@ -62,7 +62,7 @@ class UserDetailsPage extends StatelessWidget {
                   ),
                   CircleAvatar(
                     radius: 50,
-                    backgroundColor: AppColor.toneEleven,
+                    backgroundColor: AppColor.background,
                     backgroundImage: user.profileImg.isNotEmpty
                         ? NetworkImage(
                             user.profileImg,

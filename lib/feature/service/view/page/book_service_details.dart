@@ -15,6 +15,7 @@ class ServiceDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
+      
           icon: const Center(
             child: FaIcon(
               FontAwesomeIcons.chevronLeft,

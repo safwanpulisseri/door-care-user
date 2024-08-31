@@ -11,6 +11,7 @@ class ToastificationWidget {
     ToastificationStyle style = ToastificationStyle.flatColored,
     Duration autoCloseDuration = const Duration(seconds: 5),
     Alignment alignment = Alignment.topRight,
+    Color? backgroundColor,
     Color? textColor,
   }) {
     toastification.show(
@@ -33,6 +34,7 @@ class ToastificationWidget {
         ),
       ),
       alignment: alignment,
+      backgroundColor: backgroundColor,
     );
   }
 }

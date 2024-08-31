@@ -33,30 +33,27 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          leading: Builder(
-            builder: (context) => IconButton(
-              icon: const Icon(
-                Icons.menu,
-              ),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
+          leading: IconButton(
+            icon: const Icon(
+              Icons.menu,
             ),
+            onPressed: () => Scaffold.of(context).openDrawer(),
           ),
-          title: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-            if (state is AuthSuccessState) {
-              final userName = state.userModel.name;
-              return Text(
-                'HELLO ${userName.toUpperCase()} 👋',
-                style: const TextStyle(fontSize: 16, color: Colors.grey),
-              );
-            } else {
-              return const Text('HELLO USER 👋');
-            }
-          }),
+          title: BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthSuccessState) {
+                final userName = state.userModel.name;
+                return Text(
+                  'HELLO ${userName.toUpperCase()} 👋',
+                  style: const TextStyle(fontSize: 16, color: Colors.grey),
+                );
+              } else {
+                return const Text('HELLO USER 👋');
+              }
+            },
+          ),
           backgroundColor: AppColor.background,
         ),
-        drawer: const CustomDrawer(),
         body: PaddingWidget(
           child: ListView(
             children: [

@@ -1,3 +1,4 @@
+import 'package:door_care/feature/manageService/chat/data/service/remote/start_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,12 +11,13 @@ import '../../../../core/widget/toastifiaction_widget.dart';
 import '../../../auth/view/widget/loading_dialog.dart';
 import '../../../manageService/chat/bloc/bloc/create_conversation_bloc.dart';
 import '../../../manageService/chat/view/chat_page.dart';
+import '../../../manageService/chat/view/chat_page_three.dart';
 import '../../bloc/cancel_a_pending_service_bloc/cancel_a_booked_pending_service_bloc.dart';
 import '../../data/model/fetch_all_booked_service_model.dart';
 import 'location_fetching_widget.dart';
 
-class CardWidget extends StatelessWidget {
-  const CardWidget({
+class CardWidgetTwo extends StatelessWidget {
+  const CardWidgetTwo({
     super.key,
     required this.service,
   });
@@ -24,6 +26,35 @@ class CardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void _navigateToChatPage(String senderId, String receiverId) async {
+      try {
+        // Get the conversation details from the API
+        final response = await startConversation(senderId, receiverId);
+
+        final conversationId = response['conversationId'];
+        final username = response['username'];
+        final userProfile = response['userProfile'];
+
+        // Navigate to the chat page with the obtained conversation ID, username, and user profile
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChatPageThree(
+              conversationId: conversationId,
+              senderId: senderId,
+              receiverId: receiverId,
+              username: username,
+              userProfile: userProfile,
+            ),
+          ),
+        );
+      } catch (e) {
+        // Handle errors if the API call fails
+        print('Error: $e');
+        // Optionally, show an error message to the user
+      }
+    }
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Container(
@@ -92,7 +123,7 @@ class CardWidget extends StatelessWidget {
                   Chip(
                     side: BorderSide.none,
                     label: Text(
-                      service.status,
+                      '${service.status}ted',
                       style: const TextStyle(color: AppColor.toneSix),
                     ),
                     backgroundColor: AppColor.toneSix.withOpacity(0.2),
@@ -158,57 +189,58 @@ class CardWidget extends StatelessWidget {
                 height: 20,
               ),
               const Divider(),
-              // BlocListener<CreateConversationBloc, CreateConversationState>(
-              //   listener: (context, state) {
-              //     if (state is CreateConversationLoadingState) {
-              //       LoadingDialog.show(context);
-              //     } else if (state is CreateConversationSuccessState) {
-              //       Navigator.push(
-              //         context,
-              //         MaterialPageRoute(
-              //           builder: (context) => ChatPage(
-              //             conversation: state.conversationModel,
-              //           ),
-              //         ),
-              //       );
-              //       // ToastificationWidget.show(
-              //       //   context: context,
-              //       //   type: ToastificationType.success,
-              //       //   title: 'Success',
-              //       //   description: 'Successfully created chat with User',
-              //       // );
-              //     } else if (state is CreateConversationFailState) {
-              //       ToastificationWidget.show(
-              //         context: context,
-              //         type: ToastificationType.error,
-              //         title: 'Error',
-              //         description: 'Failed to Start conversation with User',
-              //       );
-              //     }
-              //   },
-              //   child: Align(
-              //     alignment: Alignment.centerLeft,
-              //     child: ElevatedButton(
-              //       onPressed: () {
-              //         context.read<CreateConversationBloc>().add(
-              //               CreateAConversationEvent(
-              //                 receiverId: service.userId,
-              //               ),
-              //             );
-              //       },
-              //       style: ElevatedButton.styleFrom(
-              //         backgroundColor: AppColor.primary,
-              //         shape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(8),
-              //         ),
-              //       ),
-              //       child: const Text(
-              //         'Chat',
-              //         style: TextStyle(color: AppColor.background),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              BlocListener<CreateConversationBloc, CreateConversationState>(
+                listener: (context, state) {
+                  if (state is CreateConversationLoadingState) {
+                    LoadingDialog.show(context);
+                  } else if (state is CreateConversationSuccessState) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatPage(
+                          conversation: state.conversationModel,
+                        ),
+                      ),
+                    );
+                    // ToastificationWidget.show(
+                    //   context: context,
+                    //   type: ToastificationType.success,
+                    //   title: 'Success',
+                    //   description: 'Successfully created chat with User',
+                    // );
+                  } else if (state is CreateConversationFailState) {
+                    ToastificationWidget.show(
+                      context: context,
+                      type: ToastificationType.error,
+                      title: 'Error',
+                      description: 'Failed to Start conversation with User',
+                    );
+                  }
+                },
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // context.read<CreateConversationBloc>().add(
+                      //       CreateAConversationEvent(
+                      //         receiverId: service.userId,
+                      //       ),
+                      //     );
+                      _navigateToChatPage(service.userId, service.workerId!);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColor.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text(
+                      'Chat',
+                      style: TextStyle(color: AppColor.background),
+                    ),
+                  ),
+                ),
+              ),
               Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
