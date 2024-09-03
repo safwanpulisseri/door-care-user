@@ -1,16 +1,14 @@
+import 'package:door_care/feature/bookings/data/model/fetch_all_booked_service_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/theme/color/app_color.dart';
 import '../../../../core/util/png_asset.dart';
 import '../../../../core/widget/padding_widget.dart';
-import '../../bloc/cancel_a_pending_service_bloc/cancel_a_booked_pending_service_bloc.dart';
-import '../../data/model/fetch_all_booked_service_model.dart';
 import 'location_fetching_widget.dart';
 
-class CardWidget extends StatelessWidget {
-  const CardWidget({
+class CardWidgetThree extends StatelessWidget {
+  const CardWidgetThree({
     super.key,
     required this.service,
   });
@@ -19,6 +17,8 @@ class CardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Create an instance of NumberFormat to format the price
+    final numberFormat = NumberFormat('#,##0.00'); // For two decimal places
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Container(
@@ -88,9 +88,9 @@ class CardWidget extends StatelessWidget {
                     side: BorderSide.none,
                     label: Text(
                       service.status,
-                      style: const TextStyle(color: AppColor.toneSix),
+                      style: const TextStyle(color: AppColor.toneEight),
                     ),
-                    backgroundColor: AppColor.toneSix.withOpacity(0.2),
+                    backgroundColor: AppColor.toneOne.withOpacity(0.7),
                   ),
                 ],
               ),
@@ -127,9 +127,43 @@ class CardWidget extends StatelessWidget {
                           width: 1.0,
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SvgPicture.asset("assets/svg/booking_one.svg"),
+                      child: const Padding(
+                        padding: EdgeInsets.all(7.0),
+                        child: Icon(
+                          IconlyLight.wallet,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    '₹ ${numberFormat.format(service.price)}',
+                    style: const TextStyle(
+                      color: AppColor.secondary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: AppColor.toneThree.withOpacity(0.7),
+                          width: 1.0,
+                        ),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(7.0),
+                        child: Icon(
+                          IconlyLight.calendar,
+                        ),
                       ),
                     ),
                   ),
@@ -153,75 +187,20 @@ class CardWidget extends StatelessWidget {
                 height: 20,
               ),
               const Divider(),
-              // BlocListener<CreateConversationBloc, CreateConversationState>(
-              //   listener: (context, state) {
-              //     if (state is CreateConversationLoadingState) {
-              //       LoadingDialog.show(context);
-              //     } else if (state is CreateConversationSuccessState) {
-              //       Navigator.push(
-              //         context,
-              //         MaterialPageRoute(
-              //           builder: (context) => ChatPage(
-              //             conversation: state.conversationModel,
-              //           ),
-              //         ),
-              //       );
-              //       // ToastificationWidget.show(
-              //       //   context: context,
-              //       //   type: ToastificationType.success,
-              //       //   title: 'Success',
-              //       //   description: 'Successfully created chat with User',
-              //       // );
-              //     } else if (state is CreateConversationFailState) {
-              //       ToastificationWidget.show(
-              //         context: context,
-              //         type: ToastificationType.error,
-              //         title: 'Error',
-              //         description: 'Failed to Start conversation with User',
-              //       );
-              //     }
-              //   },
-              //   child: Align(
-              //     alignment: Alignment.centerLeft,
-              //     child: ElevatedButton(
-              //       onPressed: () {
-              //         context.read<CreateConversationBloc>().add(
-              //               CreateAConversationEvent(
-              //                 receiverId: service.userId,
-              //               ),
-              //             );
-              //       },
-              //       style: ElevatedButton.styleFrom(
-              //         backgroundColor: AppColor.primary,
-              //         shape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(8),
-              //         ),
-              //       ),
-              //       child: const Text(
-              //         'Chat',
-              //         style: TextStyle(color: AppColor.background),
-              //       ),
-              //     ),
-              //   ),
-              // ),
               Align(
                 alignment: Alignment.center,
                 child: ElevatedButton(
                   onPressed: () {
-                    context.read<CancelABookedPendingServiceBloc>().add(
-                          CancelBookedPendingServiceEvent(
-                            bookingId: service.id,
-                          ),
-                        );
+                    //
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.toneSeven.withOpacity(0.8),
+                    backgroundColor: AppColor.toneEight,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                   child: const Text(
-                    'Cancel',
+                    'Pay',
                     style: TextStyle(color: AppColor.background),
                   ),
                 ),

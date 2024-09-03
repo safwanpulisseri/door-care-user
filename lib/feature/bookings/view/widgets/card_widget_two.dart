@@ -12,7 +12,6 @@ import '../../../auth/view/widget/loading_dialog.dart';
 import '../../../manageService/chat/bloc/bloc/create_conversation_bloc.dart';
 import '../../../manageService/chat/view/chat_page.dart';
 import '../../../manageService/chat/view/chat_page_three.dart';
-import '../../bloc/cancel_a_pending_service_bloc/cancel_a_booked_pending_service_bloc.dart';
 import '../../data/model/fetch_all_booked_service_model.dart';
 import 'location_fetching_widget.dart';
 
@@ -32,8 +31,8 @@ class CardWidgetTwo extends StatelessWidget {
         final response = await startConversation(senderId, receiverId);
 
         final conversationId = response['conversationId'];
-        final username = response['username'];
-        final userProfile = response['userProfile'];
+        final workername = response['workername'];
+        final workerProfile = response['workerProfile'];
 
         // Navigate to the chat page with the obtained conversation ID, username, and user profile
         Navigator.push(
@@ -43,8 +42,8 @@ class CardWidgetTwo extends StatelessWidget {
               conversationId: conversationId,
               senderId: senderId,
               receiverId: receiverId,
-              username: username,
-              userProfile: userProfile,
+              workername: workername,
+              workerProfile: workerProfile,
             ),
           ),
         );
@@ -218,7 +217,7 @@ class CardWidgetTwo extends StatelessWidget {
                   }
                 },
                 child: Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.center,
                   child: ElevatedButton(
                     onPressed: () {
                       // context.read<CreateConversationBloc>().add(
@@ -241,28 +240,28 @@ class CardWidgetTwo extends StatelessWidget {
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: ElevatedButton(
-                  onPressed: () {
-                    context.read<CancelABookedPendingServiceBloc>().add(
-                          CancelBookedPendingServiceEvent(
-                            bookingId: service.id,
-                          ),
-                        );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.toneSeven.withOpacity(0.8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text(
-                    'Cancel',
-                    style: TextStyle(color: AppColor.background),
-                  ),
-                ),
-              ),
+              // Align(
+              //   alignment: Alignment.centerRight,
+              //   child: ElevatedButton(
+              //     onPressed: () {
+              //       context.read<CancelABookedPendingServiceBloc>().add(
+              //             CancelBookedPendingServiceEvent(
+              //               bookingId: service.id,
+              //             ),
+              //           );
+              //     },
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: AppColor.toneSeven.withOpacity(0.8),
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(8),
+              //       ),
+              //     ),
+              //     child: const Text(
+              //       'Cancel',
+              //       style: TextStyle(color: AppColor.background),
+              //     ),
+              //   ),
+              // ),
               const SizedBox(
                 height: 10,
               ),

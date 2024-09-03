@@ -1,8 +1,6 @@
-import 'package:door_care/core/widget/padding_widget.dart';
 import 'package:door_care/feature/bookings/view/widgets/card_widget_two.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../core/theme/color/app_color.dart';

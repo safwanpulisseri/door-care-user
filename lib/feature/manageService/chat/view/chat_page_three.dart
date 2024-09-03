@@ -13,16 +13,16 @@ class ChatPageThree extends StatefulWidget {
   final String conversationId;
   final String senderId;
   final String receiverId;
-  final String username;
-  final String userProfile;
+  final String workername;
+  final String workerProfile;
 
   const ChatPageThree({
     super.key,
     required this.conversationId,
     required this.senderId,
     required this.receiverId,
-    required this.username,
-    required this.userProfile,
+    required this.workername,
+    required this.workerProfile,
   });
 
   @override
@@ -116,9 +116,9 @@ class _ChatPageState extends State<ChatPageThree> {
           children: [
             CircleAvatar(
               backgroundColor: AppColor.toneThree.withOpacity(0.3),
-              backgroundImage: widget.userProfile.isNotEmpty
+              backgroundImage: widget.workerProfile.isNotEmpty
                   ? NetworkImage(
-                      widget.userProfile,
+                      widget.workerProfile,
                     )
                   : const AssetImage(AppPngPath.personImage),
             ),
@@ -126,7 +126,7 @@ class _ChatPageState extends State<ChatPageThree> {
               width: 10,
             ),
             Text(
-              widget.username,
+              widget.workername,
               style: const TextStyle(
                 color: AppColor.secondary,
               ),
@@ -177,9 +177,9 @@ class _ChatPageState extends State<ChatPageThree> {
                         ),
                         CircleAvatar(
                           backgroundColor: AppColor.toneThree.withOpacity(0.3),
-                          backgroundImage: widget.userProfile.isNotEmpty
+                          backgroundImage: widget.workerProfile.isNotEmpty
                               ? NetworkImage(
-                                  widget.userProfile,
+                                  widget.workerProfile,
                                 )
                               : const AssetImage(AppPngPath.personImage)
                                   as ImageProvider,

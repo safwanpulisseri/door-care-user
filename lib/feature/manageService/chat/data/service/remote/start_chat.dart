@@ -17,19 +17,19 @@ Future<Map<String, dynamic>> startConversation(
     final data = json.decode(response.body);
 
     final conversationId = data['newConversation']['data']['_id'];
-    final username = data['newConversation']['data']['user'];
-    final userProfile = data['newConversation']['data']['user_profile'];
+    final workername = data['newConversation']['data']['worker'];
+    final workerProfile = data['newConversation']['data']['worker_profile'];
 
     log('Conversation ID: $conversationId');
     log('Sender ID: $senderId');
     log('Receiver ID: $receiverId');
-    log('Username: $username');
-    log('User Profile: $userProfile');
+    log('workername: $workername');
+    log('workerProfile: $workerProfile');
 
     return {
       'conversationId': conversationId,
-      'username': username,
-      'userProfile': userProfile,
+      'workername': workername,
+      'workerProfile': workerProfile,
     };
   } else {
     throw Exception('Failed to create conversation');
