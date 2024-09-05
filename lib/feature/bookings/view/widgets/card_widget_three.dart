@@ -1,4 +1,5 @@
 import 'package:door_care/feature/bookings/data/model/fetch_all_booked_service_model.dart';
+import 'package:door_care/feature/manageService/inc/view/pages/payment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:intl/intl.dart';
@@ -191,7 +192,16 @@ class CardWidgetThree extends StatelessWidget {
                 alignment: Alignment.center,
                 child: ElevatedButton(
                   onPressed: () {
-                    //
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PaymentPage(
+                          amount: service.price,
+                          bookingId: service.id,
+                          workerId: service.workerId.toString(),
+                        ),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColor.toneEight,
