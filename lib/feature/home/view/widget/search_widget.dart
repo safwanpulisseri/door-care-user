@@ -2,7 +2,14 @@ import 'package:door_care/core/theme/color/app_color.dart';
 import 'package:flutter/material.dart';
 
 class SearchWidget extends StatelessWidget {
-  const SearchWidget({super.key});
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
+
+  const SearchWidget({
+    super.key,
+    required this.controller,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +31,14 @@ class SearchWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Expanded(
+          Expanded(
             child: TextField(
-              decoration: InputDecoration(
+              controller: controller,
+              decoration: const InputDecoration(
                 hintText: 'Search what you need...',
                 border: InputBorder.none,
               ),
+              onChanged: onChanged,
             ),
           ),
           Container(

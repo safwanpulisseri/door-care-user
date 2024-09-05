@@ -1,17 +1,17 @@
-import 'package:door_care/core/util/jason_asset.dart';
+import 'package:door_care/feature/home/view/widget/search_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:door_care/feature/auth/bloc/auth_bloc/auth_bloc.dart';
-import 'package:door_care/feature/drawer/home_drawer.dart';
 import 'package:door_care/feature/home/bloc/bloc/fetch_all_added_services_bloc.dart';
 import 'package:door_care/feature/home/data/repository/fetch_all_services_repo.dart';
 import 'package:door_care/feature/home/data/service/remote/fetch_all_services_remote_service.dart';
-import 'package:door_care/feature/home/view/widget/search_widget.dart';
-import 'package:door_care/core/theme/color/app_color.dart';
-import 'package:door_care/core/widget/padding_widget.dart';
 import 'package:door_care/feature/service/view/page/book_service_details.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottie/lottie.dart';
+import '../../../../core/theme/color/app_color.dart';
+import '../../../../core/util/jason_asset.dart';
 import '../../../../core/widget/opacity_container.dart';
+import '../../../../core/widget/padding_widget.dart';
+import 'package:lottie/lottie.dart';
+import '../../data/model/fetch_all_service_model.dart';
 import '../widget/join_our_team.dart';
 import '../widget/review_card.dart';
 import '../widget/service_card.dart';
@@ -24,6 +24,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Controller to handle search input
+  TextEditingController searchController = TextEditingController();
+  List<FetchAllServiceModel> allServices = []; // List of all services
+  List<FetchAllServiceModel> filteredServices =
+      []; // Filtered list of services based on search
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -34,9 +40,7 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           leading: IconButton(
-            icon: const Icon(
-              Icons.menu,
-            ),
+            icon: const Icon(Icons.menu),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
           title: BlocBuilder<AuthBloc, AuthState>(
@@ -69,45 +73,87 @@ class _HomePageState extends State<HomePage> {
                     textAlign: TextAlign.start,
                   ),
                   const SizedBox(height: 16),
-                  const SearchWidget(),
+
+                  // Updated SearchWidget with controller and callback
+                  SearchWidget(
+                    controller: searchController,
+                    onChanged: (query) {
+                      setState(
+                        () {
+                          filteredServices = allServices
+                              .where((service) => service.serviceName
+                                  .toLowerCase()
+                                  .contains(query.toLowerCase()))
+                              .toList();
+                        },
+                      );
+                    },
+                  ),
                   const SizedBox(height: 24),
+                  // Conditionally change the text based on search query
                   Row(
                     children: [
                       const OpacityContainer(),
-                      const SizedBox(
-                        width: 10,
-                      ),
+                      const SizedBox(width: 10),
                       Text(
-                        'All Services',
-                        style:
-                            Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                  color: AppColor.secondary,
-                                ),
+                        searchController.text.isEmpty
+                            ? 'All Services'
+                            : 'Search Results',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineLarge
+                            ?.copyWith(color: AppColor.secondary),
                       ),
                     ],
                   ),
                   const SizedBox(height: 16),
+
+                  // Bloc to handle fetching services
                   BlocBuilder<FetchAllAddedServicesBloc,
                       FetchAllAddedServicesState>(
                     builder: (context, state) {
                       if (state is FetchAllAddedServicesLoadingState) {
                         return const Center(child: CircularProgressIndicator());
                       } else if (state is FetchAllAddedServicesSuccessState) {
+                        allServices = state.fetchAllServiceModel;
+
+                        // If no search query, show all services
+                        if (filteredServices.isEmpty &&
+                            searchController.text.isEmpty) {
+                          filteredServices = allServices;
+                        }
+
+                        // Show message if no services match the search query
+                        if (filteredServices.isEmpty &&
+                            searchController.text.isNotEmpty) {
+                          return Center(
+                            child: Column(
+                              children: [
+                                Lottie.asset(AppJasonPath.failedToFetch,
+                                    height: 150, width: 150),
+                                const Text(
+                                  'No results found',
+                                  style: TextStyle(color: AppColor.toneSeven),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+
                         return SizedBox(
                           height: 200,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: state.fetchAllServiceModel.length,
+                            itemCount: filteredServices.length,
                             itemBuilder: (context, index) {
-                              final service = state.fetchAllServiceModel[index];
+                              final service = filteredServices[index];
                               return GestureDetector(
                                 onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ServiceDetailsPage(
-                                        service: service,
-                                      ),
+                                      builder: (context) =>
+                                          ServiceDetailsPage(service: service),
                                     ),
                                   );
                                 },
