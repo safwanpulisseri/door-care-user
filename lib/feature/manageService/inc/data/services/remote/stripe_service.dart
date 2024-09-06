@@ -1,75 +1,73 @@
-import 'dart:developer';
-import 'package:dio/dio.dart';
+import 'package:door_care/feature/manageService/inc/data/services/remote/pay_service_remote.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import '../../const/stripe_const.dart';
+import '../../../view/pages/payment_fail_page.dart';
+import '../../../view/pages/payment_success.dart';
 
 class StripeService {
   StripeService._();
 
   static final StripeService instance = StripeService._();
 
-  Future<void> makePayment() async {
+  Future<void> handlePayment({
+    required num amount,
+    required String bookingId,
+    required String workerId,
+    required BuildContext context, // Pass context to navigate
+  }) async {
     try {
-      String? paymentIntentClientSecret = await _createPaymentIntent(
-        10,
-        "usd",
+      // Create a payment session
+      String? sessionId = await PayServiceRemote().createPaymentSession(
+        amount: amount,
+        bookingId: bookingId,
+        workerId: workerId,
       );
-      if (paymentIntentClientSecret == null) return;
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-          paymentIntentClientSecret: paymentIntentClientSecret,
-          merchantDisplayName: "Safwan Pulisseri",
-        ),
-      );
-      await _processPayment();
-    } catch (e) {
-      print(e);
-    }
-  }
+      print('Session ID: $sessionId');
 
-  Future<String?> _createPaymentIntent(int amount, String currency) async {
-    try {
-      final Dio dio = Dio();
-      Map<String, dynamic> data = {
-        "amount": _calculateAmount(
-          amount,
-        ),
-        "currency": currency,
-      };
-      var response = await dio.post(
-        "https://api.stripe.com/v1/payment_intents",
-        data: data,
-        options: Options(
-          contentType: Headers.formUrlEncodedContentType,
-          headers: {
-            "Authorization": "Bearer $stripeSecretKey",
-            "Content-Type": 'application/x-www-form-urlencoded'
-          },
-        ),
-      );
-      if (response.data != null) {
-        String stripeId = response.data["id"];
-        log("StripeId: $stripeId"); // Print the StripeId
-        return response.data["client_secret"];
+      if (sessionId != null) {
+        // Initialize Stripe
+        await Stripe.instance.initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+            paymentIntentClientSecret: sessionId,
+            merchantDisplayName: 'Door care',
+          ),
+        );
+
+        // Present the payment sheet
+        await Stripe.instance.presentPaymentSheet();
+
+        // Payment successful
+        print('Payment successful');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (ctx) =>
+                const PaymentSuccess(), // Navigate to PaymentSuccess on success
+          ),
+        );
+      } else {
+        print('Failed to create payment session');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (ctx) =>
+                const PaymentFailure(), // Navigate to PaymentFailure on failure
+          ),
+        );
       }
-      return null;
     } catch (e) {
-      print(e);
+      if (e is StripeException) {
+        print('Error from Stripe: ${e.error.localizedMessage}');
+      } else {
+        print('Error during payment: $e');
+      }
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (ctx) =>
+              const PaymentFailure(), // Navigate to PaymentFailure on error
+        ),
+      );
     }
-    return null;
-  }
-
-  Future<void> _processPayment() async {
-    try {
-      await Stripe.instance.presentPaymentSheet();
-      await Stripe.instance.confirmPaymentSheetPayment();
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  String _calculateAmount(int amount) {
-    final calculatedAmount = amount * 100;
-    return calculatedAmount.toString();
   }
 }

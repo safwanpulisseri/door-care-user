@@ -27,7 +27,11 @@ class TabScreenThree extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             } else if (state is FetchAllCompletedServiceSuccessState) {
               final services = state.fetchAllCompletedServiceModel;
-              if (services.isEmpty) {
+              // Filter unpaid services
+              final unpaidServices =
+                  services.where((service) => !service.payment).toList();
+
+              if (unpaidServices.isEmpty) {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -37,11 +41,9 @@ class TabScreenThree extends StatelessWidget {
                         color: AppColor.toneThree,
                         size: 40,
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 20),
                       Text(
-                        'No Booked Services Available',
+                        'No Completed Services Available',
                         style: TextStyle(
                             color: AppColor.secondary.withOpacity(0.8)),
                       ),
@@ -49,12 +51,13 @@ class TabScreenThree extends StatelessWidget {
                   ),
                 );
               }
+
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListView.builder(
-                  itemCount: services.length,
+                  itemCount: unpaidServices.length,
                   itemBuilder: (context, index) {
-                    final service = services[index];
+                    final service = unpaidServices[index];
                     return CardWidgetThree(service: service);
                   },
                 ),

@@ -1,29 +1,38 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 
 class PayServiceRemote {
-  final String _link = "http://10.0.2.2:3000/api/user/"; // For android
+  final String _link = "http://10.0.2.2:3000/api/user/";
 
   final dio = Dio();
 
-  Future<Response<dynamic>> createPayment({
+  Future<String?> createPaymentSession({
     required num amount,
     required String bookingId,
     required String workerId,
   }) async {
-    log("on dio");
     try {
-      var response = await dio.post("${_link}payment", data: {
-        'amount': amount,
-        'bookingId': bookingId,
-        'workerId': workerId,
-      });
-      log("success");
-      return response;
+      var response = await dio.post(
+        "${_link}payment",
+        data: {
+          'amount': amount,
+          'bookingId': bookingId,
+          'workerId': workerId,
+        },
+      );
+
+      log('Response status: ${response.statusCode}');
+      log('Response data: ${response.data}');
+
+      if (response.statusCode == 200) {
+        return response.data['data']; // Access the sessionId correctly
+      } else {
+        log('Error: Failed to create session, backend returned ${response.statusCode}');
+        return null;
+      }
     } catch (e) {
-      log('Error during createPayment $e');
-      throw Exception();
+      log('Error during createPaymentSession: $e');
     }
+    return null;
   }
 }

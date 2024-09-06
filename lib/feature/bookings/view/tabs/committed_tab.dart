@@ -42,7 +42,7 @@ class TabScreenTwo extends StatelessWidget {
                         height: 20,
                       ),
                       Text(
-                        'No Booked Services Available',
+                        'No Committed Services Available',
                         style: TextStyle(
                             color: AppColor.secondary.withOpacity(0.8)),
                       ),

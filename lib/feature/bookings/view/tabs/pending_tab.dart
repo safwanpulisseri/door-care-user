@@ -53,7 +53,7 @@ class _TabScreenOneState extends State<TabScreenOne> {
                         height: 20,
                       ),
                       Text(
-                        'No Booked Services Available',
+                        'No Pending Services Available',
                         style: TextStyle(
                             color: AppColor.secondary.withOpacity(0.8)),
                       ),

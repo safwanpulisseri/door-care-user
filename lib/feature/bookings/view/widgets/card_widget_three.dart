@@ -1,11 +1,11 @@
 import 'package:door_care/feature/bookings/data/model/fetch_all_booked_service_model.dart';
-import 'package:door_care/feature/manageService/inc/view/pages/payment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/theme/color/app_color.dart';
 import '../../../../core/util/png_asset.dart';
 import '../../../../core/widget/padding_widget.dart';
+import '../../../manageService/inc/data/services/remote/stripe_service.dart';
 import 'location_fetching_widget.dart';
 
 class CardWidgetThree extends StatelessWidget {
@@ -20,6 +20,7 @@ class CardWidgetThree extends StatelessWidget {
   Widget build(BuildContext context) {
     // Create an instance of NumberFormat to format the price
     final numberFormat = NumberFormat('#,##0.00'); // For two decimal places
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Container(
@@ -30,13 +31,11 @@ class CardWidgetThree extends StatelessWidget {
           ),
         ),
         child: PaddingWidget(
-          // padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
+
               Row(
                 children: [
                   CircleAvatar(
@@ -44,10 +43,6 @@ class CardWidgetThree extends StatelessWidget {
                     backgroundImage: service.serviceImg.isNotEmpty
                         ? NetworkImage(service.serviceImg)
                         : const AssetImage(AppPngPath.homeCleanTwo),
-                    // onBackgroundImageError:
-                    //     (exception, stackTrace) {
-                    //   // Optionally handle image loading errors here
-                    // },
                   ),
                   const SizedBox(width: 10),
                   Column(
@@ -130,9 +125,7 @@ class CardWidgetThree extends StatelessWidget {
                       ),
                       child: const Padding(
                         padding: EdgeInsets.all(7.0),
-                        child: Icon(
-                          IconlyLight.wallet,
-                        ),
+                        child: Icon(IconlyLight.wallet),
                       ),
                     ),
                   ),
@@ -162,9 +155,7 @@ class CardWidgetThree extends StatelessWidget {
                       ),
                       child: const Padding(
                         padding: EdgeInsets.all(7.0),
-                        child: Icon(
-                          IconlyLight.calendar,
-                        ),
+                        child: Icon(IconlyLight.calendar),
                       ),
                     ),
                   ),
@@ -184,23 +175,18 @@ class CardWidgetThree extends StatelessWidget {
                 latitude: service.latitude,
                 longitude: service.longitude,
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               const Divider(),
               Align(
                 alignment: Alignment.center,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PaymentPage(
-                          amount: service.price,
-                          bookingId: service.id,
-                          workerId: service.workerId.toString(),
-                        ),
-                      ),
+                  onPressed: () async {
+                    // Call StripeService to handle the payment
+                    await StripeService.instance.handlePayment(
+                      amount: service.price,
+                      bookingId: service.id,
+                      workerId: service.workerId.toString(),
+                      context: context,
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -215,9 +201,8 @@ class CardWidgetThree extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
+              //
             ],
           ),
         ),
