@@ -1,22 +1,23 @@
 # Door Care - User Side App
 
-Welcome to the **User Side App** of **Door Care**, a home service platform where users can book various home services such as plumbing, electrical work, and AC repair with ease. This app provides a seamless and efficient user experience, allowing users to book services, track progress, and make secure payments.
+Welcome to the **User Side App** of **Door Care**, a home service platform where users can easily book services such as plumbing, electrical work, and AC repair. This app provides a seamless experience for users to book services, track progress, and manage their bookings and profiles.
 
 ## Features
 
-- **Service Booking**: Easily browse and book home services from a list of available options.
-- **Real-Time Tracking**: Track the status of your service in real-time and view the worker’s location via Google Maps integration.
-- **Secure Payments**: Pay securely using Razorpay or other integrated payment options.
-- **Service History**: View past bookings and payment history for easy reference.
-- **Profile Management**: Manage your personal information and update address details effortlessly.
+- **Service Booking**: Browse and book home services from a list of available options with real-time status updates.
+- **Stripe Payment Integration**: Secure payment processing using **Stripe** for easy and reliable transactions.
+- **Social Media Authentication**: Login with **Google Auth** for quick and secure access.
+- **Profile Image Storage**: User profile images are securely stored using **Firebase Storage**.
+- **Maps Integration**: Track the service's location in real-time through **Flutter Maps** during the booking of a service.
+- **Profile Management**: Users can update their profiles, manage bookings, and cancel services with ease.
+- **Booking History**: View and manage past bookings and cancellations.
+- **Service Cancellation**: Users can cancel a booking and update their profiles accordingly.
+  
+## Backend
 
-## Tech Stack
-
-- **Flutter**: Cross-platform development framework for both Android and iOS apps.
-- **Firebase**: Used for authentication and backend database services.
-- **Razorpay**: Integrated for secure payment processing.
-- **Google Maps API**: Real-time location tracking of service professionals.
-
+- **Node.js**: The backend of the app is built using **Node.js**.
+- **MongoDB**: **MongoDB** is used as the database for managing user data, bookings, and service records.
+  
 ## How to Run
 
 1. **Clone the repository**:
@@ -36,9 +37,17 @@ Welcome to the **User Side App** of **Door Care**, a home service platform where
     flutter run
     ```
 
+## Tech Stack
+
+- **Flutter**: Cross-platform mobile development for Android and iOS.
+- **Node.js & MongoDB**: Backend system to handle APIs and data.
+- **Stripe Payment Gateway**: Secure online payment integration.
+- **Firebase**: Used for storing user profile images and authentication.
+- **Google Maps API**: For real-time worker location tracking.
+
 ## Screenshots
 
-(Include a few screenshots of the app interface here, such as the booking process, service tracking, and payment flow.)
+(Include relevant screenshots of booking, service tracking, and payment.)
 
 ## License
 
