@@ -43,7 +43,7 @@ Welcome to the **User Side App** of **Door Care**, a home service platform where
 - **Node.js & MongoDB**: Backend system to handle APIs and data.
 - **Stripe Payment Gateway**: Secure online payment integration.
 - **Firebase**: Used for storing user profile images and authentication.
-- **Google Maps API**: For real-time worker location tracking.
+- **Maps**: For real-time worker location tracking.
 
 ## Screenshots
 
@@ -59,6 +59,6 @@ For any issues or inquiries, feel free to reach out:
 
 - **Developer**: Safwan Pulisseri
 - **Email**: safwanpulisseri123@gmail.com
-- **GitHub**: [GitHub Profile](https://github.com/your-username)
-- **LinkedIn**: [LinkedIn Profile](https://www.linkedin.com/in/your-profile)
+- **GitHub**: [GitHub Profile](https://github.com/safwanpulisseri)
+- **LinkedIn**: [LinkedIn Profile](https://www.linkedin.com/in/safwan-pulisseri-6a6071281/)
 
