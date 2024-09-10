@@ -16,8 +16,7 @@ class ChatPageThree extends StatefulWidget {
   final String workername;
   final String workerProfile;
 
-  const ChatPageThree({
-    super.key,
+  ChatPageThree({
     required this.conversationId,
     required this.senderId,
     required this.receiverId,
@@ -26,7 +25,7 @@ class ChatPageThree extends StatefulWidget {
   });
 
   @override
-  createState() => _ChatPageState();
+  _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPageThree> {
@@ -88,7 +87,7 @@ class _ChatPageState extends State<ChatPageThree> {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
+          duration: Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );
       }
@@ -100,6 +99,13 @@ class _ChatPageState extends State<ChatPageThree> {
     _socketService.dispose();
     _scrollController.dispose();
     super.dispose();
+  }
+
+// Method to check if two dates are on the same day
+  bool _isSameDay(DateTime date1, DateTime date2) {
+    return date1.year == date2.year &&
+        date1.month == date2.month &&
+        date1.day == date2.day;
   }
 
   @override
@@ -122,12 +128,12 @@ class _ChatPageState extends State<ChatPageThree> {
                     )
                   : const AssetImage(AppPngPath.personImage),
             ),
-            const SizedBox(
+            SizedBox(
               width: 10,
             ),
             Text(
-              widget.workername,
-              style: const TextStyle(
+              '${widget.workername}',
+              style: TextStyle(
                 color: AppColor.secondary,
               ),
             ),
@@ -141,99 +147,114 @@ class _ChatPageState extends State<ChatPageThree> {
             child: ListView.builder(
               controller: _scrollController,
               itemCount: _messages.length,
-              // padding: EdgeInsets.only(
-              //     bottom:
-              //         16.0), // Adjust the padding to ensure the last message is fully visible
               itemBuilder: (context, index) {
                 final message = _messages[index];
-
-                // Fallback to empty string if 'text' is null
                 final messageText = message['text'] ?? '';
-
-                // Fallback to current date and time if 'createdAt' is null
                 final createdAt = message['createdAt'] != null
                     ? DateTime.parse(message['createdAt'])
                     : DateTime.now();
-
-                // Format date and time to include AM/PM in 12-hour format
-                final formattedDate =
-                    DateFormat('dd/MM/yyyy hh:mm a').format(createdAt);
-
-                // Check if senderId is null and compare
+                final formattedDate = DateFormat('hh:mm a').format(createdAt);
                 final isCurrentUser = message['senderId'] == widget.senderId;
 
-                return Align(
-                  alignment: isCurrentUser
-                      ? Alignment.centerRight
-                      : Alignment.centerLeft,
-                  child: Row(
-                    mainAxisAlignment: isCurrentUser
-                        ? MainAxisAlignment.end
-                        : MainAxisAlignment.start,
-                    children: [
-                      if (!isCurrentUser) ...[
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        CircleAvatar(
-                          backgroundColor: AppColor.toneThree.withOpacity(0.3),
-                          backgroundImage: widget.workerProfile.isNotEmpty
-                              ? NetworkImage(
-                                  widget.workerProfile,
-                                )
-                              : const AssetImage(AppPngPath.personImage)
-                                  as ImageProvider,
-                          radius: 20,
-                        ),
-                      ],
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16),
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 4, horizontal: 8),
-                        decoration: BoxDecoration(
-                          color: isCurrentUser
-                              ? AppColor.primary
-                              : AppColor.toneTwelve,
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: const Radius.circular(12),
-                            bottomRight: const Radius.circular(12),
-                            topLeft: isCurrentUser
-                                ? const Radius.circular(12)
-                                : Radius.zero,
-                            topRight: isCurrentUser
-                                ? Radius.zero
-                                : const Radius.circular(12),
+                // Check if this message is the first message of the day
+                bool showDateHeader = true;
+                if (index > 0) {
+                  final previousMessageDate =
+                      DateTime.parse(_messages[index - 1]['createdAt']);
+                  showDateHeader = !_isSameDay(createdAt, previousMessageDate);
+                }
+
+                return Column(
+                  children: [
+                    if (showDateHeader)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Text(
+                          DateFormat('EEEE, dd MMMM yyyy').format(createdAt),
+                          style: TextStyle(
+                            color: AppColor.secondary.withOpacity(0.6),
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        child: Column(
-                          crossAxisAlignment: isCurrentUser
-                              ? CrossAxisAlignment.end
-                              : CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              messageText,
-                              style: TextStyle(
-                                color: isCurrentUser
-                                    ? AppColor.background
-                                    : AppColor.secondary,
-                              ),
+                      ),
+                    Align(
+                      alignment: isCurrentUser
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
+                      child: Row(
+                        mainAxisAlignment: isCurrentUser
+                            ? MainAxisAlignment.end
+                            : MainAxisAlignment.start,
+                        children: [
+                          if (!isCurrentUser) ...[
+                            SizedBox(
+                              width: 5,
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              formattedDate,
-                              style: TextStyle(
-                                color: isCurrentUser
-                                    ? AppColor.background.withOpacity(0.6)
-                                    : AppColor.secondary.withOpacity(0.6),
-                                fontSize: 10,
-                              ),
+                            CircleAvatar(
+                              backgroundColor:
+                                  AppColor.toneThree.withOpacity(0.3),
+                              backgroundImage: widget.workerProfile.isNotEmpty
+                                  ? NetworkImage(
+                                      widget.workerProfile,
+                                    )
+                                  : const AssetImage(AppPngPath.personImage)
+                                      as ImageProvider,
+                              radius: 20,
                             ),
                           ],
-                        ),
+                          Flexible(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 16),
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 4, horizontal: 8),
+                              decoration: BoxDecoration(
+                                color: isCurrentUser
+                                    ? AppColor.primary
+                                    : AppColor.toneTwelve,
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(12),
+                                  bottomRight: Radius.circular(12),
+                                  topLeft: isCurrentUser
+                                      ? Radius.circular(12)
+                                      : Radius.zero,
+                                  topRight: isCurrentUser
+                                      ? Radius.zero
+                                      : Radius.circular(12),
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: isCurrentUser
+                                    ? CrossAxisAlignment.end
+                                    : CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    messageText,
+                                    style: TextStyle(
+                                      color: isCurrentUser
+                                          ? AppColor.background
+                                          : AppColor.secondary,
+                                    ),
+                                    softWrap: true,
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    formattedDate,
+                                    style: TextStyle(
+                                      color: isCurrentUser
+                                          ? AppColor.background.withOpacity(0.6)
+                                          : AppColor.secondary.withOpacity(0.6),
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 );
               },
             ),
@@ -244,44 +265,44 @@ class _ChatPageState extends State<ChatPageThree> {
               children: [
                 Expanded(
                   child: TextFormField(
-                      controller: _messageController,
-                      // validator: widget.validator,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: AppColor.textfield,
-                        hintText: 'Write your message',
-                        hintStyle: const TextStyle(
-                          color: AppColor.toneThree,
-                          fontSize: 16.0,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                          borderSide: const BorderSide(
-                            color: AppColor.primary,
-                            width: 1.0,
-                          ),
+                    controller: _messageController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: AppColor.textfield,
+                      hintText: 'Write your message',
+                      hintStyle: const TextStyle(
+                        color: AppColor.toneThree,
+                        fontSize: 16.0,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        borderSide: const BorderSide(
+                          color: AppColor.primary,
+                          width: 1.0,
                         ),
                       ),
-                      style: GoogleFonts.poppins(
-                        color: AppColor.secondary,
-                        fontSize: 16.0,
-                      )),
+                    ),
+                    style: GoogleFonts.poppins(
+                      color: AppColor.secondary,
+                      fontSize: 16.0,
+                    ),
+                  ),
                 ),
-                const SizedBox(
+                SizedBox(
                   width: 10,
                 ),
                 GestureDetector(
                   onTap: _sendMessage,
-                  child: const Material(
-                    shape: CircleBorder(),
+                  child: Material(
+                    shape: const CircleBorder(),
                     color: AppColor.primary,
                     child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Icon(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Icon(
                         size: 30,
                         IconlyLight.send,
                         color: AppColor.background,

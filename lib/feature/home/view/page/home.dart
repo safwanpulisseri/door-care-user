@@ -13,7 +13,6 @@ import '../../../../core/widget/padding_widget.dart';
 import 'package:lottie/lottie.dart';
 import '../../data/model/fetch_all_service_model.dart';
 import '../widget/join_our_team.dart';
-import '../widget/review_card.dart';
 import '../widget/service_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -194,19 +193,6 @@ class _HomePageState extends State<HomePage> {
                       }
                     },
                   ),
-                  const SizedBox(height: 24),
-                  SizedBox(
-                    height: 200,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: const [
-                        ReviewCard(),
-                        ReviewCard(),
-                        ReviewCard(),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
                   Row(
                     children: [
                       const OpacityContainer(),
