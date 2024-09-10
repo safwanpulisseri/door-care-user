@@ -1,25 +1,25 @@
-import 'package:door_care/feature/navigation_menu/page/home_navigation_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../../core/theme/color/app_color.dart';
 import '../../../../../core/util/jason_asset.dart';
+import '../../../../navigation_menu/page/home_navigation_menu.dart';
 
 class PaymentSuccess extends StatelessWidget {
   const PaymentSuccess({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Navigate to another page after 3 seconds
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (ctx) =>
-              HomeNavigationMenu(), // Change this to the page you want to navigate to
-        ),
-      );
-    });
-
+    Future.delayed(
+      const Duration(seconds: 2),
+      () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (ctx) => HomeNavigationMenu(),
+          ),
+        );
+      },
+    );
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,

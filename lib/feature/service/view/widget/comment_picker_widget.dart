@@ -17,7 +17,7 @@ class CommentPickerWidget extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.toneNine,
+        color: AppColor.toneTwelve,
       ),
       child: Padding(
         padding: const EdgeInsets.all(10.0),

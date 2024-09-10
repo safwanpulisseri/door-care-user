@@ -1,8 +1,9 @@
 import 'package:door_care/feature/navigation_menu/page/home_navigation_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 import '../../../../core/theme/color/app_color.dart';
-import '../widget/bottom_app_bar_widget.dart';
+import '../../../../core/util/jason_asset.dart';
 import '../widget/circle_avathar_widget.dart';
 
 class CompletedBookService extends StatelessWidget {
@@ -10,11 +11,19 @@ class CompletedBookService extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (ctx) => HomeNavigationMenu(),
+        ),
+      );
+    });
     return Scaffold(
-      body: const SafeArea(
+      body: SafeArea(
         child: Column(
           children: [
-            StepperWidget(
+            const StepperWidget(
               titleOne: 'Location',
               titleTwo: 'Details',
               titleThree: 'Success',
@@ -37,40 +46,45 @@ class CompletedBookService extends StatelessWidget {
                 color: AppColor.background,
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 300),
-              child: Center(
-                child: Text(
-                  'Your booking has been initiated successfully.\nPlease wait for the worker\'s approval.',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: AppColor.secondary,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+            Spacer(
+              flex: 2,
+            ),
+            SizedBox(
+              height: 200,
+              width: 200,
+              child: Lottie.asset(
+                AppJasonPath.verifyIcon,
+                // repeat: false, // Ensure the animation plays only once
               ),
+            ),
+            const Spacer(
+              flex: 1,
+            ),
+            Text(
+              "Booking Successful!",
+              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.secondary,
+                    fontSize: 27,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+            const Spacer(
+              flex: 1,
+            ),
+            Text(
+              "Your booking has been initiated successfully.\nPlease wait for the worker's approval.\nYou will be redirected shortly.",
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: AppColor.secondary,
+                    fontSize: 16,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+            const Spacer(
+              flex: 5,
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomAppBarWidget(
-        leftButtonText: 'Cancel',
-        rightButtonText: 'Continue',
-        onLeftButtonPressed: () {
-          //
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (_) => HomeNavigationMenu()),
-            (route) => false,
-          );
-        },
-        onRightButtonPressed: () {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (_) => HomeNavigationMenu()),
-            (route) => false,
-          );
-        },
       ),
     );
   }

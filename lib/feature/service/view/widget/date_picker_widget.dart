@@ -27,10 +27,10 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            colorScheme: const ColorScheme.light(primary: AppColor.toneTen),
-            textTheme: const TextTheme().copyWith(
-              bodyLarge: const TextStyle(color: AppColor.secondary),
-            ),
+            colorScheme: const ColorScheme.light(primary: AppColor.primary),
+            // textTheme: const TextTheme().copyWith(
+            //   bodyLarge: const TextStyle(color: AppColor.secondary),
+            // ),
           ),
           child: child!,
         );
@@ -53,7 +53,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: AppColor.toneTen,
+          color: AppColor.toneTwelve,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
