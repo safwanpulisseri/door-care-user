@@ -151,20 +151,20 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                             as ImageProvider,
                   ),
                   const SizedBox(height: 10),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      showImageSourceSelection(context);
-                    },
-                    label: const Text('Select Image'),
-                    icon: const Icon(Icons.add_a_photo_outlined,
-                        color: AppColor.primary),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.background,
-                      foregroundColor: AppColor.primary,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
-                    ),
-                  ),
+                  // ElevatedButton.icon(
+                  //   onPressed: () {
+                  //     showImageSourceSelection(context);
+                  //   },
+                  //   label: const Text('Select Image'),
+                  //   icon: const Icon(Icons.add_a_photo_outlined,
+                  //       color: AppColor.primary),
+                  //   style: ElevatedButton.styleFrom(
+                  //     backgroundColor: AppColor.background,
+                  //     foregroundColor: AppColor.primary,
+                  //     padding: const EdgeInsets.symmetric(
+                  //         horizontal: 16, vertical: 8),
+                  //   ),
+                  // ),
                   const Spacer(flex: 1),
                   AuthTextFormField(
                     controller: _nameController,
@@ -181,12 +181,12 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                     textInputType: TextInputType.phone,
                   ),
                   const Spacer(flex: 1),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Handle update logic
-                    },
-                    child: const Text('Update'),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     // Handle update logic
+                  //   },
+                  //   child: const Text('Update'),
+                  // ),
                   const Spacer(flex: 3),
                 ],
               ),
