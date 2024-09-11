@@ -98,5 +98,20 @@ class AppTheme {
         ),
       ),
     ),
+    dialogTheme: DialogTheme(
+      backgroundColor: AppColor.background,
+      titleTextStyle: const TextStyle(
+        color: AppColor.secondary,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+      contentTextStyle: const TextStyle(
+        color: AppColor.secondary,
+        fontSize: 16,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+    ),
   );
 }

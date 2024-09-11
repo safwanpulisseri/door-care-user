@@ -9,6 +9,7 @@ import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/widget/toastifiaction_widget.dart';
 import '../auth/view/page/sign_in_page.dart';
+import 'view/page/booking_history_page.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -92,9 +93,17 @@ class CustomDrawer extends StatelessWidget {
           Expanded(
             child: ListView(
               children: [
-                const DrawerItem(
+                DrawerItem(
                   icon: IconlyLight.bookmark,
-                  text: 'My Bookings',
+                  text: 'Bookings',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BookingHistoryPage(),
+                      ),
+                    );
+                  },
                 ),
                 // const DrawerItem(
                 // icon: IconlyLight.wallet,

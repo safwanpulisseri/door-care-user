@@ -103,11 +103,17 @@ class CardWidgetThree extends StatelessWidget {
                   ),
                   Chip(
                     side: BorderSide.none,
-                    label: const Text(
-                      'Pending',
-                      style: TextStyle(color: AppColor.toneSix),
+                    label: Text(
+                      service.payment ? 'Completed' : 'Pending',
+                      style: TextStyle(
+                        color: service.payment
+                            ? AppColor.toneEight
+                            : AppColor.toneSix,
+                      ),
                     ),
-                    backgroundColor: AppColor.toneSix.withOpacity(0.2),
+                    backgroundColor: service.payment
+                        ? AppColor.toneOne.withOpacity(0.7)
+                        : AppColor.toneSix.withOpacity(0.2),
                   ),
                 ],
               ),
@@ -176,33 +182,35 @@ class CardWidgetThree extends StatelessWidget {
                 longitude: service.longitude,
               ),
               const SizedBox(height: 20),
-              const Divider(),
-              Align(
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    // Call StripeService to handle the payment
-                    await StripeService.instance.handlePayment(
-                      amount: service.price,
-                      bookingId: service.id,
-                      workerId: service.workerId.toString(),
-                      context: context,
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.toneEight,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+              // Only show the divider and button if payment is not completed
+              if (!service.payment) ...[
+                const Divider(),
+                Align(
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      // Call StripeService to handle the payment
+                      await StripeService.instance.handlePayment(
+                        amount: service.price,
+                        bookingId: service.id,
+                        workerId: service.workerId.toString(),
+                        context: context,
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColor.toneEight,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text(
+                      'Pay',
+                      style: TextStyle(color: AppColor.background),
                     ),
                   ),
-                  child: const Text(
-                    'Pay',
-                    style: TextStyle(color: AppColor.background),
-                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              //
+                const SizedBox(height: 10),
+              ]
             ],
           ),
         ),
